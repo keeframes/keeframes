@@ -59,7 +59,7 @@ def login():
     return jsonify({"success": "success"}), 201
 
 
-@auth.route("/logout", methods=["POST"])
+@auth.route("/logout", methods=["GET"])
 @login_required
 def logout():
     logout_user()
@@ -70,7 +70,7 @@ def logout():
 # the function runs if the login_required does not fail
 
 
-@auth.route("/is_authenticated", methods=["POST"])
+@auth.route("/is_authenticated", methods=["GET"])
 @login_required
 def is_authenticated():
-    return True, 200
+    return jsonify(True), 200
