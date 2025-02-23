@@ -48,3 +48,9 @@ def login():
     login_user(user, remember=True)
 
     return jsonify({"success": "success"}), 201
+
+@auth.route('/logout', methods=["POST"])
+@login_required
+def logout():
+    logout_user()
+    return jsonify({"success": "User logged out"}), 201
