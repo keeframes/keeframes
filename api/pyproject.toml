@@ -1,12 +1,12 @@
 [project]
-name = "api"
+name = "app"
 version = "0.1.0"
 description = ""
 authors = [
     {name = "Christopher Bonner",email = "cbonner.dev@outlook.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 dependencies = [
     "flask (>=3.1.0,<4.0.0)",
     "flask-cors (>=5.0.0,<6.0.0)",
@@ -19,7 +19,7 @@ dependencies = [
 ]
 
 [tool.poetry]
-packages = [{include = "api", from = "src"}]
+packages = [{include = "app", from = "src"}]
 
 
 [build-system]
