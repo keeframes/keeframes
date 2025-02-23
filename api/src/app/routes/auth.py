@@ -4,7 +4,8 @@ from flask_login import login_user, logout_user, login_required, current_user
 
 auth = Blueprint("auth", __name__)
 
-@auth.route('/signup', methods=['POST'])
+
+@auth.route("/signup", methods=["POST"])
 def signup():
     name = request.json.get("name")
     email = request.json.get("email")
@@ -14,22 +15,30 @@ def signup():
 
     if user_exists:
         return jsonify({"error", "User already exists"}), 409
-    
-    new_user = User(
-        email=email,
-        name=name
-    )
+
+    new_user = User(email=email, name=name)
     new_user.set_password(password)
 
     try:
         db.session.add(new_user)
         db.session.commit()
-        return jsonify({"success": True, "user_id": new_user.id, "name": new_user.name, "email": new_user.email}), 201
+        return (
+            jsonify(
+                {
+                    "success": True,
+                    "user_id": new_user.id,
+                    "name": new_user.name,
+                    "email": new_user.email,
+                }
+            ),
+            201,
+        )
     except Exception:
         db.session.rollback()
         return jsonify({"error": "Internal Server Error"}), 500
 
-@auth.route('/login', methods=["POST"])
+
+@auth.route("/login", methods=["POST"])
 def login():
     email = request.json.get("email")
     password = request.json.get("password")
@@ -49,8 +58,19 @@ def login():
 
     return jsonify({"success": "success"}), 201
 
-@auth.route('/logout', methods=["POST"])
+
+@auth.route("/logout", methods=["POST"])
 @login_required
 def logout():
     logout_user()
     return jsonify({"success": "User logged out"}), 201
+
+
+# checks to see if a user is authenticated
+# the function runs if the login_required does not fail
+
+
+@auth.route("/is_authenticated", methods=["POST"])
+@login_required
+def is_authenticated():
+    return True, 200
