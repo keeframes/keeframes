@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from uuid import uuid4
 
-db = SQLAlchemy()
+db = SQLAlchemy() # flask ORM
 
 
 # creates a uuid
@@ -12,8 +12,9 @@ def get_uuid():
     return uuid4().hex
 
 
-class User(UserMixin, db.Model):
-    id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
+class User(UserMixin, db.Model): 
+    id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid) # default=get_uuid ensures each user is uuid not normal autonumber 
+    name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(300), nullable=False)
     password = db.Column(db.Text)
 
