@@ -11,7 +11,7 @@ def signup():
     email = request.json.get("email")
     password = request.json.get("password")
 
-    user_exists = User.query.filter_by(email=email).first() is not None
+    user_exists = User.query.filter_by(email=email).first() is not None # checks for existing account email match
 
     if user_exists:
         return jsonify({"error", "User already exists"}), 409
@@ -34,7 +34,7 @@ def signup():
             201,
         )
     except Exception:
-        db.session.rollback()
+        db.session.rollback() # reverts database changes once error caught
         return jsonify({"error": "Internal Server Error"}), 500
 
 
@@ -43,7 +43,7 @@ def login():
     email = request.json.get("email")
     password = request.json.get("password")
 
-    user = User.query.filter_by(email=email).first()
+    user = User.query.filter_by(email=email).first() # user query filters until it finds first email match
 
     if not user:
         return jsonify({"error": "User not found"}), 401
@@ -68,8 +68,6 @@ def logout():
 
 # checks to see if a user is authenticated
 # the function runs if the login_required does not fail
-
-
 @auth.route("/is_authenticated", methods=["GET"])
 @login_required
 def is_authenticated():
