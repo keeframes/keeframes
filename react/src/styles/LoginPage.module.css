@@ -19,6 +19,11 @@ form {
   text-align: center;
 }
 
+.invalid {
+  font-size: var(--font-350);
+  color: var(--error);
+}
+
 .row {
   position: relative;
 }
@@ -31,7 +36,7 @@ form {
   background-color: var(--secondary);
 }
 
-.row > input {
+.input {
   width: 100%;
   height: 1rem;
   padding: 1.8rem;
@@ -76,6 +81,10 @@ hr {
   align-items: center;
 }
 
+.actions > p, .actions > a {
+  font-size: var(--font-350);
+}
+
 .create {
   width: fit-content;
 }
@@ -84,6 +93,6 @@ hr {
   color: var(--accent);
 }
 
-a {
-  text-decoration: none;
+.error {
+  border: solid 1px var(--error);
 }

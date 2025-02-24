@@ -4,6 +4,7 @@
   --secondary-2: #232323;
   --accent: #F3AE19;
   --text: #FFFFFF;
+  --error: #F32929;
 
   --font-350: calc(var(--font-400) - .125rem);
   --font-400: 1rem;
@@ -49,6 +50,14 @@ p {
   color: var(--text-primary);
 }
 
+a {
+  text-decoration: none;
+}
+
 html {
   background-color: var(--primary);
+}
+
+.hide {
+  display: none;
 }
