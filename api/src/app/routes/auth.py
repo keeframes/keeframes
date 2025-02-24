@@ -10,7 +10,7 @@ def signup():
     email = request.json.get("email")
     password = request.json.get("password")
 
-    user_exists = User.query.filter_by(email=email).first() is not None
+    user_exists = User.query.filter_by(email=email).first() is not None # checks for existing account email match
 
     if user_exists:
         return jsonify({"error", "User already exists"}), 409
@@ -19,14 +19,14 @@ def signup():
         email=email,
         name=name
     )
-    new_user.set_password(password)
+    new_user.set_password(password) # password cannot be defined with standard text
 
     try:
         db.session.add(new_user)
-        db.session.commit()
+        db.session.commit() # "commit" to the user database
         return jsonify({"success": True, "user_id": new_user.id, "name": new_user.name, "email": new_user.email}), 201
     except Exception:
-        db.session.rollback()
+        db.session.rollback() # reverts database changes once error caught
         return jsonify({"error": "Internal Server Error"}), 500
 
 @auth.route('/login', methods=["POST"])
@@ -34,7 +34,7 @@ def login():
     email = request.json.get("email")
     password = request.json.get("password")
 
-    user = User.query.filter_by(email=email).first()
+    user = User.query.filter_by(email=email).first() # user query filters until it finds first email match
 
     if not user:
         return jsonify({"error": "User not found"}), 401
