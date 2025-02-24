@@ -10,9 +10,6 @@ function Login() {
   // stores the error state
   const [error, setError] = useState(null)
 
-  // stores the loading state
-  const [loading, setLoading] = useState(false)
-
   // stores the form values
   const [values, setValues] = useState({
     email: "",
