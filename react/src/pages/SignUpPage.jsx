@@ -23,7 +23,7 @@ function SignUp() {
         e.preventDefault()
 
         const form = e.target;
-        const isValid = form.checkValidation();
+        const isValid = form.checkValidity();
 
         if (!isValid) {
             setError("Submission is invalid")
