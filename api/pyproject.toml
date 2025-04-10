@@ -1,9 +1,9 @@
 [project]
-name = "app"
+name = "api"
 version = "0.1.0"
-description = ""
 authors = [
-    {name = "Christopher Bonner",email = "cbonner.dev@outlook.com"}
+    {name = "Christopher Bonner"},
+{name = "Freddie Crumpton"}
 ]
 readme = "README.md"
 requires-python = ">=3.12"
@@ -19,7 +19,7 @@ dependencies = [
 ]
 
 [tool.poetry]
-packages = [{include = "app", from = "src"}]
+package-mode = false
 
 
 [build-system]
