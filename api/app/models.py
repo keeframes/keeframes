@@ -15,6 +15,7 @@ def get_uuid():
 class User(UserMixin, db.Model):
     id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid) # default=get_uuid ensures each user is uuid not normal autonumber 
     name = db.Column(db.String(100), nullable=False)
+    username = db.Column(db.String(100), nullable=False, unique=True)
     email = db.Column(db.String(300), nullable=False, unique=True)
     password = db.Column(db.Text)
 

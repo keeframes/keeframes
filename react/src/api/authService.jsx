@@ -17,8 +17,10 @@ class AuthService {
     return httpClient.get(`${API_URL}/is_authenticated`);
   }
 
-  signup(email, password) {
+  signup(name, username, email, password) {
     return httpClient.post(`${API_URL}/signup`, {
+      name,
+      username,
       email,
       password,
     });
