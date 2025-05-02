@@ -8,6 +8,7 @@ auth = Blueprint("auth", __name__)
 @auth.route("/signup", methods=["POST"])
 def signup():
     name = request.json.get("name")
+    username = request.json.get("username")
     email = request.json.get("email")
     password = request.json.get("password")
 
@@ -16,7 +17,7 @@ def signup():
     if user_exists:
         return jsonify({"error": "User already exists"}), 409
 
-    new_user = User(email=email, name=name)
+    new_user = User(email=email, name=name, username=username)
     new_user.set_password(password)
 
     try:

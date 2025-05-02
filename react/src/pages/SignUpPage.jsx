@@ -10,6 +10,7 @@ function SignUp() {
 
     const [values, setValues] = useState({
         name: "name",
+        username: "username",
         email: "email",
         password: "password"
     }); 
@@ -29,7 +30,7 @@ function SignUp() {
             setError("Submission is invalid")
         }
         else {
-            authService.signup(values.email, values.password)
+            authService.signup(values.name, values.username, values.email, values.password)
             .then(() => {
                 authService.login(values.email, values.password)
                 .then(() => {
