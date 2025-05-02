@@ -14,7 +14,7 @@ def signup():
     user_exists = User.query.filter_by(email=email).first() is not None # checks for existing account email match
 
     if user_exists:
-        return jsonify({"error", "User already exists"}), 409
+        return jsonify({"error": "User already exists"}), 409
 
     new_user = User(email=email, name=name)
     new_user.set_password(password)
