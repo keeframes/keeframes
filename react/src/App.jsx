@@ -4,6 +4,7 @@ import "./index.css"
 import Login from "./pages/LoginPage"
 import SignUp from "./pages/SignUpPage"
 import ProtectedRoutes from "./utils/protectedRoutes"
+import CreatePage from "./pages/CreatePostPage"
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Route path="/login" element={<Login/>}/>
       <Route path="/" element={<Home/>}/>
       <Route element={<ProtectedRoutes/>}>
+        <Route path="/create" element={<CreatePage/>}/>
       </Route>
     </Routes>
   )

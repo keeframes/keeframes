@@ -13,7 +13,7 @@ function Home() {
   useEffect(() => {
     const getVideoSrc = async () => {
       try {
-        const response = await axios.get(`${API_URL}/video/ds`);
+        const response = await axios.get(`${API_URL}/video/bbed863557d54c289e52c2f87500041a/f3f56a2c4595414c97b7bec4639ad500`);
         setVideo({
           ...video,
           cookies: response.data.cookies,
