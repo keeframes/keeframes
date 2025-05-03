@@ -1,10 +1,16 @@
 :root {
-  --primary: #272838;
-  --secondary: #303143;
-  --secondary-2: #42415D;
-  --accent: #EA6666;
+  --primary: #0F0F10;
+  --secondary: #1B1B1C;
+  --secondary-2: #313133;
+
+  --accent-yellow: #FFE186;
+  --accent-yellow-2: #EACB6B;
+  
+  --accent-purple: #7A7AD1;
+  --accent-purple: #5F5F8A;
+
   --text: #FFFFFF;
-  --error: #F32929;
+  --error: #C92F2F;
 
   --font-350: calc(var(--font-400) - .125rem);
   --font-400: 1rem;
