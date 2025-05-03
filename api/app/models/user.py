@@ -33,3 +33,6 @@ class User(UserMixin, db.Model):
             "name": self.name,
             "username": self.username
         }
+    
+def load_all_users():
+    return User.query.all()
