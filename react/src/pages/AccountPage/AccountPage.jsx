@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import styles from "../styles/AccountPage.module.css";
-import { API_URL } from "../utils/constants";
-import httpClient from "../utils/httpClient";
+import styles from "./AccountPage.module.css";
+import { API_URL } from "../../utils/constants";
+import httpClient from "../../utils/httpClient";
 import { io } from "socket.io-client";
-import WebSocketCall from "../components/WebSocketCall";
+import WebSocketCall from "../../components/WebSocketCall";
 
 function AccountPage() {
     const [users, setUsers] = useState([]);

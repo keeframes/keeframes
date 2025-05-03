@@ -1,7 +1,7 @@
 import { useState } from "react";
-import styles from "../styles/LoginPage.module.css"
 import { Link, useNavigate } from "react-router-dom";
-import authService from "../api/authService"
+import styles from "./LoginPage.module.css"
+import authService from "../../api/authService"
 
 function Login() {
   // allows for page redirection
