@@ -45,4 +45,5 @@ app.register_blueprint(routes)
 def load_user(user_id):
     return User.query.get(user_id)
 
-socketio.init_app(app)
+# manual socketio app init
+socketio.init_app(app) 

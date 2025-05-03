@@ -31,7 +31,7 @@ function AccountPage() {
 
     useEffect(() => {
         if (buttonStatus) {
-            const socket = io("http://localhost:8000", {
+            const socket = io(API_URL, {
                 transports: ["websocket"],
             });
 

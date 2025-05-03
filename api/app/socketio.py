@@ -1,3 +1,4 @@
 from flask_socketio import SocketIO
 
-socketio = SocketIO(cors_allowed_origins="*")
+# creates an accessible socketio instance 
+socketio = SocketIO(cors_allowed_origins="*") 
