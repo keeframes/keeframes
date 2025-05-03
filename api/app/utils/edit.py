@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from ..utils.cloudfront import CloudFrontUtil
 
 
-def sign_video_url(user, video):
+def sign_edit_url(user, video):
     # expiry time
     expires_at = datetime.now() + timedelta(hours=1)
 

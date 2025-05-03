@@ -1,7 +1,7 @@
 import bcrypt
 from flask_login import UserMixin
 from .extensions import db, get_uuid
-from .relationships import video_likes
+from .relationships import edit_likes
 
 
 class User(UserMixin, db.Model):
@@ -11,8 +11,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(300), nullable=False, unique=True)
     password = db.Column(db.Text)
 
-    videos = db.relationship("Video", back_populates="user", cascade="all, delete")
-    liked_videos = db.relationship("Video", secondary=video_likes, back_populates="likes")
+    edits = db.relationship("Edit", back_populates="user", cascade="all, delete")
+    liked_edits = db.relationship("Edit", secondary=edit_likes, back_populates="likes")
     comments = db.relationship("Comment", back_populates="user", cascade="all, delete")
 
     # flask login NEEDS this to be implemented

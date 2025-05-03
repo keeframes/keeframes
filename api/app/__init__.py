@@ -35,7 +35,7 @@ app.register_blueprint(routes)
 
 
 # just in case we have to remake db tables
-#with app.app_context():
+# with app.app_context():
 #    db.drop_all()
 #    db.create_all()
 

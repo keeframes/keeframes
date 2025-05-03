@@ -7,10 +7,10 @@ class Comment(db.Model):
     content = db.Column(db.String(100), nullable=False)
     reply_id = db.Column(db.String(32), db.ForeignKey("comment.id", ondelete="CASCADE", onupdate="CASCADE"))
     user_id = db.Column(db.String(32), db.ForeignKey("user.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
-    video_id = db.Column(db.String(32), db.ForeignKey("video.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
+    edit_id = db.Column(db.String(32), db.ForeignKey("edit.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
 
     user = db.relationship("User", back_populates="comments", cascade="all, delete")
-    video = db.relationship("Video", back_populates="comments", cascade="all, delete")
+    edit = db.relationship("Edit", back_populates="comments", cascade="all, delete")
 
     liked_comments = db.relationship("Comment", secondary=comment_likes)
 

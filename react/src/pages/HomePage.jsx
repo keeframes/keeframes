@@ -5,31 +5,31 @@ import { useState } from "react";
 import httpClient from "../utils/httpClient";
 
 function Home() {
-  const [videos, setVideos] = useState([]);
+  const [edits, setEdits] = useState([]);
 
   useEffect(() => {
-    const getVideos = async () => {
-      const response = await httpClient.get(`${API_URL}/videos`);
-      setVideos(response.data.videos);
+    const getEdits = async () => {
+      const response = await httpClient.get(`${API_URL}/edits`);
+      setEdits(response.data.edits);
     }
-    getVideos()
+    getEdits()
   }, []);
 
 
   return (
     <>
       <div className={styles.container}>
-        {videos.map((video, index) => 
+        {edits.map((edit, index) => 
           <React.Fragment key={index}>
-            <p>@{video.user.username}</p>
-            <video
+            <p>@{edit.user.username}</p>
+            <edit
               key={index}
               width={1920 / 2}
               height={1080 / 2}
-              src={video.url}
+              src={edit.url}
               controls
             />
-            <p>{video.caption}</p>
+            <p>{edit.caption}</p>
           </React.Fragment>
         )}
       </div>
