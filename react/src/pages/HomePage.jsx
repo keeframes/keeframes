@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
-import "../index.css";
 import { API_URL } from "../utils/constants";
-import axios from "axios";
+import styles from "../styles/HomePage.module.css"
 import { useState } from "react";
 import httpClient from "../utils/httpClient";
 
@@ -19,7 +18,7 @@ function Home() {
 
   return (
     <>
-      <div>
+      <div className={styles.container}>
         {videos.map((video, index) => 
           <React.Fragment key={index}>
             <p>@{video.user.username}</p>
