@@ -4,7 +4,7 @@ function VideoPlayer({ url }) {
   return <div className={styles.container}>
     <video
       src={url}
-      controls
+      loop={true}
     />
   </div>
 }
