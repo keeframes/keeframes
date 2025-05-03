@@ -1,6 +1,6 @@
-import styles from "../styles/CreatePage.module.css";
-import { API_URL } from "../utils/constants";
-import httpClient from "../utils/httpClient";
+import styles from "./CreatePage.module.css";
+import { API_URL } from "../../utils/constants";
+import httpClient from "../../utils/httpClient";
 
 function CreatePage() {
   const handleSubmit = (e) => {

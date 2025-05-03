@@ -1,11 +1,11 @@
 import { Routes, Route } from "react-router-dom"
-import Home from "./pages/HomePage"
 import "./index.css"
-import Login from "./pages/LoginPage"
-import SignUp from "./pages/SignUpPage"
+import Home from "./pages/HomePage/HomePage"
+import Login from "./pages/LoginPage/LoginPage"
+import SignUp from "./pages/SignUpPage/SignUpPage"
 import ProtectedRoutes from "./utils/protectedRoutes"
-import CreatePage from "./pages/CreatePostPage"
-import AccountPage from "./pages/AccountPage"
+import CreatePage from "./pages/CreatePostPage/CreatePostPage"
+import AccountPage from "./pages/AccountPage/AccountPage"
 
 function App() {
   return (

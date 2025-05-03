@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
-import { API_URL } from "../utils/constants";
-import styles from "../styles/HomePage.module.css"
-import { useState } from "react";
-import httpClient from "../utils/httpClient";
+import React, { useEffect, useState } from "react";
+import styles from "./HomePage.module.css"
+import { API_URL } from "../../utils/constants";
+import httpClient from "../../utils/httpClient";
 
 function Home() {
   const [edits, setEdits] = useState([]);
