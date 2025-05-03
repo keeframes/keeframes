@@ -7,7 +7,7 @@ function CreatePage() {
     e.preventDefault()
     const form = new FormData(e.target)
     console.log(form)
-    httpClient.post(`${API_URL}/video`, form)
+    httpClient.post(`${API_URL}/edit`, form)
   }
 
   return (

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./HomePage.module.css"
 import { API_URL } from "../../utils/constants";
 import httpClient from "../../utils/httpClient";
+import VideoPlayer from "../../components/VideoPlayer/VideoPlayer";
 
 function Home() {
   const [edits, setEdits] = useState([]);
@@ -21,13 +22,7 @@ function Home() {
         {edits.map((edit, index) => 
           <React.Fragment key={index}>
             <p>@{edit.user.username}</p>
-            <edit
-              key={index}
-              width={1920 / 2}
-              height={1080 / 2}
-              src={edit.url}
-              controls
-            />
+            <VideoPlayer url={edit.url}/>
             <p>{edit.caption}</p>
           </React.Fragment>
         )}
