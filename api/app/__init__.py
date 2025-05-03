@@ -10,6 +10,14 @@ from .models.extensions import db
 from .models.user import User
 from .socketio import socketio
 
+import logging
+
+logging.basicConfig(
+    filename='record.log',
+    level=logging.DEBUG,
+    format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s'
+)
+
 # add config to app
 app = Flask(__name__)
 app.config.from_object(ApplicationConfig)
@@ -31,7 +39,6 @@ migrate = Migrate(app, db)
 
 # registers all blueprints
 app.register_blueprint(routes)
-
 
 
 # just in case we have to remake db tables
