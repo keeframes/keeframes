@@ -1,11 +1,12 @@
 import boto3
+import logging
 from flask import jsonify, request, Blueprint
 from flask_login import login_required, current_user
-from ..utils.edit import sign_edit_url
 from ..models.edit import Edit
 from ..models.extensions import db
 
 edit = Blueprint("edit", __name__)
+logger = logging.getLogger(__name__)
 
 
 @edit.route("/edit/<id>", methods=["GET"])
@@ -19,7 +20,7 @@ def get_edit(id):
 
     except Exception as e:
         db.session.rollback()
-        print(e)
+        logger.error(e)
         return jsonify({"error": "Internal server error occured"}), 500
 
     return jsonify(edit.to_json()), 200
@@ -32,7 +33,7 @@ def get_edits():
         edits = Edit.query.all()
     except Exception as e:
         db.session.rollback()
-        print(e)
+        logger.error(e)
         return jsonify({"error": "Internal server error occured"}), 500
 
     return jsonify({"edits": [edit.to_json() for edit in edits]}), 200
@@ -41,22 +42,28 @@ def get_edits():
 @edit.route("/edit", methods=["POST"])
 @login_required
 def create_edit():
-    edit = request.files.get("edit")
+    video = request.files.get("video")
     caption = request.form.get("caption")
 
     try:
         # add edit to a database
         edit = Edit(caption=caption, user=current_user)
         db.session.add(edit)
-        db.session.commit()
+
+        # this assigns an id to the edit without comitting it
+        db.session.flush()
 
         # upload edit object to s3 using edit id and user id as a key
         s3_client = boto3.client("s3")
         object_name = f"{current_user.id}/{edit.id}"
-        response = s3_client.upload_fileobj(edit, "edits-dev", object_name)
+        s3_client.upload_fileobj(video, "edits-dev", object_name)
+
+        # commit changes
+        db.session.commit()
     except Exception as e:
         db.session.rollback()
-        print(e)
-        return jsonify({"error": "Error"}), 500
+        logger.error(e)
+        return jsonify({"error": "Internal server error occured"}), 500
 
+    logging.info(f"Successfully uploaded edit {edit.id}")
     return jsonify({"message": "success"}), 200

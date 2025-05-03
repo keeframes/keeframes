@@ -1,4 +1,4 @@
-from .extensions import db, get_uuid
+from .extensions import db, get_uuid, get_timestamp
 from .relationships import edit_hashtags, edit_likes
 from ..utils.edit import sign_edit_url
 
@@ -7,6 +7,7 @@ class Edit(db.Model):
     id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
     caption = db.Column(db.String(100), nullable=True)
     user_id = db.Column(db.String(32), db.ForeignKey("user.id"), nullable=False)
+    timestamp = db.Column(db.Integer, default=get_timestamp)
 
     user = db.relationship("User", back_populates="edits", cascade="all, delete")
     likes = db.relationship("User", secondary=edit_likes, back_populates="liked_edits")

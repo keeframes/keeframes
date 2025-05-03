@@ -1,10 +1,11 @@
-from .extensions import db, get_uuid
+from .extensions import db, get_uuid, get_timestamp
 from .relationships import comment_likes
 
 
 class Comment(db.Model):
     id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid) # default=get_uuid ensures each user is uuid not normal autonumber 
     content = db.Column(db.String(100), nullable=False)
+    timestamp = db.Column(db.Integer, default=get_timestamp)
     reply_id = db.Column(db.String(32), db.ForeignKey("comment.id", ondelete="CASCADE", onupdate="CASCADE"))
     user_id = db.Column(db.String(32), db.ForeignKey("user.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
     edit_id = db.Column(db.String(32), db.ForeignKey("edit.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
