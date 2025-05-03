@@ -30,6 +30,7 @@ function Home() {
               src={video.url}
               controls
             />
+            <p>{video.caption}</p>
           </React.Fragment>
         )}
       </div>
