@@ -4,9 +4,10 @@ from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_required, current_user
 
-from app.config import ApplicationConfig
-from app.routes import routes
-from app.models import db, User
+from .config import ApplicationConfig
+from .routes import routes
+from .models.extensions import db
+from .models.user import User
 
 # add config to app
 app = Flask(__name__)

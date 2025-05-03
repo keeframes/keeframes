@@ -1,10 +1,9 @@
 import boto3
-from flask import Flask, jsonify, request, make_response, Blueprint
+from flask import jsonify, request, Blueprint
 from flask_login import login_required, current_user
-from datetime import datetime, timedelta
-from ..utils.cloudfront import CloudFrontUtil
 from ..utils.video import sign_video_url
-from ..models import db, Video
+from ..models.video import Video
+from ..models.extensions import db
 
 video = Blueprint("video", __name__)
 

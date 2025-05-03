@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
-from app.models import User, db
 from flask_login import login_user, logout_user, login_required, current_user
+from ..models.extensions import db
+from ..models.user import User
 
 auth = Blueprint("auth", __name__)
 
