@@ -60,3 +60,4 @@ def create_video():
         return jsonify({"error": "Error"}), 500
 
     return jsonify({"message": "success"}), 200
+

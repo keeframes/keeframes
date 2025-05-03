@@ -74,3 +74,5 @@ def logout():
 @login_required
 def is_authenticated():
     return jsonify(True), 200
+
+

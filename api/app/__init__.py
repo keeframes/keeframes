@@ -8,6 +8,7 @@ from .config import ApplicationConfig
 from .routes import routes
 from .models.extensions import db
 from .models.user import User
+from .socketio import socketio
 
 # add config to app
 app = Flask(__name__)
@@ -31,6 +32,8 @@ migrate = Migrate(app, db)
 # registers all blueprints
 app.register_blueprint(routes)
 
+
+
 # just in case we have to remake db tables
 #with app.app_context():
 #    db.drop_all()
@@ -41,3 +44,5 @@ app.register_blueprint(routes)
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+
+socketio.init_app(app)
