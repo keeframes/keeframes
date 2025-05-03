@@ -1,5 +1,6 @@
 from .extensions import db, get_uuid
 from .relationships import video_hashtags
+from ..utils.video import sign_video_url
 
 
 class Video(db.Model):
@@ -12,5 +13,18 @@ class Video(db.Model):
         "Hashtag", secondary=video_hashtags, back_populates="videos"
     )
 
+    @property
+    def key(self):
+        return f"{self.user_id}/{self.id}"
+
+    @property
+    def signed_url(self):
+        return sign_video_url(self.user_id, self.id)
+
     def to_json(self):
-        return {"id": self.id, "caption": self.caption}
+        return {
+            "id": self.id,
+            "caption": self.caption,
+            "url": self.signed_url,
+            "user": self.user.to_json(),
+        }

@@ -26,3 +26,10 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         hashed_password = self.password.encode("utf-8")
         return bcrypt.checkpw(password.encode(), hashed_password)
+
+    def to_json(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "username": self.username
+        }

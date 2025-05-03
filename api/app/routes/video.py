@@ -8,25 +8,34 @@ from ..models.extensions import db
 video = Blueprint("video", __name__)
 
 
-@video.route("/video/<user>/<video>", methods=["GET"])
-def get_video_url(user, video):
-    signed_url = sign_video_url(user, video)
+@video.route("/video/<id>", methods=["GET"])
+def get_video(id):
+    try:
+        video = Video.query.get({"id": id})
 
-    return jsonify({"url": signed_url}), 200
+        if not video:
+            message = f"video with id: {id} could not be found"
+            return jsonify({"error": message}), 400
+
+    except Exception as e:
+        db.session.rollback()
+        print(e)
+        return jsonify({"error": "Internal server error occured"}), 500
+
+    return jsonify(video.to_json()), 200
 
 
 @video.route("/videos", methods=["GET"])
 def get_videos():
-    # get all videos
-    videos = Video.query.all()
+    try:
+        # get all videos
+        videos = Video.query.all()
+    except Exception as e:
+        db.session.rollback()
+        print(e)
+        return jsonify({"error": "Internal server error occured"}), 500
 
-    # signs each url for each video in the database
-    signed_urls = []
-    for video in videos:
-        signed_url = sign_video_url(video.user_id, video.id)
-        signed_urls.append(signed_url)
-
-    return jsonify({"urls": signed_urls}), 200
+    return jsonify({"videos": [video.to_json() for video in videos]}), 200
 
 
 @video.route("/video", methods=["POST"])
