@@ -7,9 +7,11 @@ import { useEffect } from "react";
 import DetailsForm from "../../components/DetailsForm/DetailsForm";
 import VideoPlayer from "../../components/VideoPlayer/VideoPlayer"
 import FilePreview from "../../components/FilePreview/FilePreview";
+import VideoThumbnailExtractor from "../../components/VideoThumbnailExtractor/VideoThumbnailExtractor";
 
 function CreatePage() {
   const [video, setVideo] = useState(null);
+  const [thumbnail, setThumbnail] = useState(null);
   const [details, setDetails] = useState({
     caption: ""
   });
@@ -17,13 +19,8 @@ function CreatePage() {
   const handleSubmit = (e) => {
     e.preventDefault()
     const form = new FormData(e.target)
-    console.log(form)
     httpClient.post(`${API_URL}/edit`, form)
   }
-
-  useEffect(() => {
-    console.log(video);
-  }, [video])
 
   return (
     <>
@@ -31,7 +28,11 @@ function CreatePage() {
         <section className={styles.videoSection}>
           {video ? 
             <>
-              <FilePreview file={video} setVideo={setVideo}/>
+              <VideoThumbnailExtractor
+                file={video}
+                setVideo={setVideo}
+                setThumbnail={setThumbnail}
+              />
             </>
             :
             <UploadVideo setVideo={setVideo}/>

@@ -1,0 +1,12 @@
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 5rem;
+}
+
+.edit, .thumbnail {
+  width: 100%;
+  height: auto;
+}
+
