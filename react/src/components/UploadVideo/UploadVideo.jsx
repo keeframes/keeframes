@@ -1,25 +1,12 @@
 import styles from "./UploadVideo.module.css";
-
-// grabs the first mp4 file from a list of files
-export const getFile = (files) => {
-  if (files && files.length > 0) {
-    for (let index in files) {
-      let file = files.item(index);
-      if (file.type === "video/mp4") {
-        // makes a url to the file
-        file.url = URL.createObjectURL(file);
-        return file
-      }
-    }
-  }
-};
+import { getFile } from "../../utils/helpers";
 
 function UploadVideo({ setVideo }) {
   // when you drop a file over the area
   const handleDrop = (e) => {
     e.preventDefault();
     const files = e.dataTransfer.files;
-    const file = getFile(files);
+    const file = getFile(files, ["video/mp4"]);
     setVideo(file);
   };
 
@@ -31,7 +18,7 @@ function UploadVideo({ setVideo }) {
   // if you use a button to upload a file
   const handleChange = (e) => {
     const files = e.target.files;
-    const file = getFile(files);
+    const file = getFile(files, ["video/mp4"]);
     setVideo(file);
   };
 

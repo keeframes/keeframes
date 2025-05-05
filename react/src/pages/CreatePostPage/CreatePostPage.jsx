@@ -3,10 +3,7 @@ import { API_URL } from "../../utils/constants";
 import httpClient from "../../utils/httpClient";
 import UploadVideo from "../../components/UploadVideo/UploadVideo";
 import { useState } from "react";
-import { useEffect } from "react";
 import DetailsForm from "../../components/DetailsForm/DetailsForm";
-import VideoPlayer from "../../components/VideoPlayer/VideoPlayer"
-import FilePreview from "../../components/FilePreview/FilePreview";
 import VideoThumbnailExtractor from "../../components/VideoThumbnailExtractor/VideoThumbnailExtractor";
 
 function CreatePage() {
@@ -31,6 +28,7 @@ function CreatePage() {
               <VideoThumbnailExtractor
                 file={video}
                 setVideo={setVideo}
+                thumbnail={thumbnail}
                 setThumbnail={setThumbnail}
               />
             </>

@@ -5,8 +5,15 @@
   margin-bottom: 5rem;
 }
 
-.edit, .thumbnail {
+.edit, .thumbnail > img {
   width: 100%;
   height: auto;
 }
 
+.canvas {
+  display: none;
+}
+
+.instructions {
+  color: var(--text-2);
+}
