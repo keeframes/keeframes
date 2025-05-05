@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--secondary);
+  width: 100%;
+  height: auto;
+  max-width: 25rem;
+  aspect-ratio: 1;
+  gap: 1rem;
+  border: 3px dashed var(--secondary-2);
+  border-radius: var(--border-radius);
+}
+
+.container:hover {
+  filter: brightness(0.9);
+}
+
+.upload {
+  background-color: var(--secondary);
+  border: solid 1px var(--secondary-2);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+}
+
+.label:hover {
+  cursor: pointer;
+}

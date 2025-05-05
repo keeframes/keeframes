@@ -10,6 +10,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(100), nullable=False, unique=True)
     email = db.Column(db.String(300), nullable=False, unique=True)
     password = db.Column(db.Text)
+    admin = db.Column(db.Boolean, default=False)
 
     edits = db.relationship("Edit", back_populates="user", cascade="all, delete")
     liked_edits = db.relationship("Edit", secondary=edit_likes, back_populates="likes")
