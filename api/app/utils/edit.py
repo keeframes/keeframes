@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from ..utils.cloudfront import CloudFrontUtil
+from ..utils.constants import CDN_DOMAIN
 
 
 def sign_edit_url(user, video):
@@ -13,7 +14,7 @@ def sign_edit_url(user, video):
     cfu = CloudFrontUtil("cf-private-1", "K3LWK7UJYZTKK1")
 
     # the video in cloudfront
-    url = f"https://d35x6vjrwluk3o.cloudfront.net/{key}"
+    url = f"https://{CDN_DOMAIN}/{key}"
 
     # the signed url
     signed_url = cfu.generate_presigned_url(url, expires_at)
