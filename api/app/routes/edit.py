@@ -65,5 +65,5 @@ def create_edit():
         logger.error(e)
         return jsonify({"error": "Internal server error occured"}), 500
 
-    logging.info(f"Successfully uploaded edit {edit.id}")
+    logger.info(f"Successfully uploaded edit {edit.id}")
     return jsonify({"message": "success"}), 200
