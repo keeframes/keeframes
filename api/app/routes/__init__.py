@@ -4,6 +4,7 @@ from .edit import edit
 from .users import users
 from .chat import chat
 from .software import software
+from .hashtag import hashtag
 
 routes = Blueprint("routes", __name__)
 
@@ -12,3 +13,4 @@ routes.register_blueprint(edit)
 routes.register_blueprint(users)
 routes.register_blueprint(chat)
 routes.register_blueprint(software)
+routes.register_blueprint(hashtag)

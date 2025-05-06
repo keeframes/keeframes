@@ -71,6 +71,14 @@ html {
   display: none;
 }
 
+button {
+  padding: 0.5rem 1rem;
+  background-color: var(--secondary);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--secondary-2);
+
+}
+
 button:hover {
   cursor: pointer;
   filter: brightness(1.2);

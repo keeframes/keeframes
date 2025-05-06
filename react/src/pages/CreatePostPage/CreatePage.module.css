@@ -1,9 +1,9 @@
 .container {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  padding: 3rem;
+  padding: 2rem;
+  gap: 3rem;
 }
 
 .videoSection {
-
 }

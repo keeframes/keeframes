@@ -9,8 +9,10 @@ import VideoThumbnailExtractor from "../../components/VideoThumbnailExtractor/Vi
 function CreatePage() {
   const [video, setVideo] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
+  const [hashtag, setHashtag] = useState(null);
   const [details, setDetails] = useState({
-    caption: ""
+    caption: "",
+    hashtags: ["amv", "edit", "tests",],
   });
 
   const handleSubmit = (e) => {
