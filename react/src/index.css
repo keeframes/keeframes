@@ -1,6 +1,6 @@
 :root {
   --primary: #0F0F10;
-  --secondary: #1B1B1C;
+  --secondary: #151515;
   --secondary-2: #313133;
 
   --accent-yellow: #FFE186;
@@ -10,6 +10,7 @@
   --accent-purple: #5F5F8A;
 
   --text: #FFFFFF;
+  --text-2: #4B4B4B;
   --error: #C92F2F;
 
   --font-350: calc(var(--font-400) - .125rem);
@@ -18,6 +19,8 @@
   --font-700: calc(var(--font-400) + .5rem);
   --font-800: calc(var(--font-400) + 1.25rem);
   --font-900: calc(var(--font-400) + 1.5rem);
+
+  --border-radius: 4px;
 }
 
 * {
@@ -66,4 +69,30 @@ html {
 
 .hide {
   display: none;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  background-color: var(--secondary);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--secondary-2);
+
+}
+
+button:hover {
+  cursor: pointer;
+  filter: brightness(1.2);
+}
+
+textarea {
+  background-color: var(--secondary);
+  padding: 1rem;
+  width: 100%;
+  height: 100%;
+  font-size: var(--font-400);
+  border: 1px solid var(--secondary-2);
+  box-sizing: border-box;
+  border-radius: var(--border-radius);
+  color: var(--text);
+  resize: vertical;
 }

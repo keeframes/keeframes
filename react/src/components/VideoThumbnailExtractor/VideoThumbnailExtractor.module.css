@@ -1,0 +1,19 @@
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 5rem;
+}
+
+.edit, .thumbnail > img {
+  width: 100%;
+  height: auto;
+}
+
+.canvas {
+  display: none;
+}
+
+.instructions {
+  color: var(--text-2);
+}

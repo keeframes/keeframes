@@ -1,0 +1,11 @@
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.length {
+  font-weight: bold;
+  color: var(--text-2);
+}

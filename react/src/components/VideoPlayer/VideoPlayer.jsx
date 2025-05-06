@@ -5,6 +5,7 @@ function VideoPlayer({ url }) {
     <video
       src={url}
       loop={true}
+      controls
     />
   </div>
 }
