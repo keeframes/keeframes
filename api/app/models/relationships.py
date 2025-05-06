@@ -19,3 +19,9 @@ comment_likes = db.Table(
     db.Column("edit_id", db.String(32), db.ForeignKey("edit.id")),
     db.Column("comment_id", db.String(32), db.ForeignKey("comment.id"))
 )
+
+followers = db.Table(
+    'followers',
+    db.Column('follower_id', db.String(32), db.ForeignKey('user.id'), primary_key=True),
+    db.Column('followed_id', db.String(32), db.ForeignKey('user.id'), primary_key=True)
+)

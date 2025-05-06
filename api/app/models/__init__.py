@@ -6,6 +6,7 @@ from .software import Software
 from .relationships import edit_hashtags
 from .relationships import comment_likes
 from .relationships import edit_likes
+from .relationships import followers
 
 __all__ = [
     "User",
@@ -16,4 +17,5 @@ __all__ = [
     "edit_hashtags",
     "comment_likes",
     "edit_likes",
+    "followers"
 ]

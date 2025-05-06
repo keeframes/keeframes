@@ -3,6 +3,7 @@ from datetime import datetime
 from flask_login import UserMixin
 from .extensions import db, get_uuid
 from .relationships import edit_likes
+from .relationships import followers
 
 
 class User(UserMixin, db.Model):
@@ -19,6 +20,15 @@ class User(UserMixin, db.Model):
     edits = db.relationship("Edit", back_populates="user", cascade="all, delete")
     liked_edits = db.relationship("Edit", secondary=edit_likes, back_populates="likes")
     comments = db.relationship("Comment", back_populates="user", cascade="all, delete")
+
+    followers = db.relationship(
+        'User',
+        secondary=followers,
+        primaryjoin=(followers.c.followed_id == id),
+        secondaryjoin=(followers.c.follower_id == id),
+        backref=db.backref('following', lazy='dynamic'),
+        lazy='dynamic'
+    )
 
     # flask login NEEDS this to be implemented
     def get_id(self):
