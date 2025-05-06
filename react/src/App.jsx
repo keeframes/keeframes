@@ -5,7 +5,7 @@ import Login from "./pages/LoginPage/LoginPage"
 import SignUp from "./pages/SignUpPage/SignUpPage"
 import ProtectedRoutes from "./utils/protectedRoutes"
 import CreatePage from "./pages/CreatePostPage/CreatePostPage"
-import AccountPage from "./pages/AccountPage/AccountPage"
+import ChatPage from "./pages/ChatPage/ChatPage"
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
       <Route path="/signup" element={<SignUp/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/" element={<Home/>}/>
-      <Route path="/account" element={<AccountPage />}/>
+      <Route path="/chat" element={<ChatPage />}/>
       <Route element={<ProtectedRoutes/>}>
         <Route path="/create" element={<CreatePage/>}/>
       </Route>
