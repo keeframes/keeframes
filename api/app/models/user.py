@@ -1,4 +1,5 @@
 import bcrypt
+from datetime import datetime
 from flask_login import UserMixin
 from .extensions import db, get_uuid
 from .relationships import edit_likes
@@ -11,6 +12,9 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(300), nullable=False, unique=True)
     password = db.Column(db.Text)
     admin = db.Column(db.Boolean, default=False)
+    pronouns = db.Column(db.String(20))
+    bio = db.Column(db.String(150), default="")
+    created_at = db.Column(db.DateTime, default=datetime.now())
 
     edits = db.relationship("Edit", back_populates="user", cascade="all, delete")
     liked_edits = db.relationship("Edit", secondary=edit_likes, back_populates="likes")
