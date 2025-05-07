@@ -8,12 +8,13 @@ const URL = import.meta.env.MODE === 'production' ? undefined : API_URL;
 
 const socket = io(API_URL, {
     cors: {
-        origin: API_URL,
+        origin: "http://localhost:5173",
     },
 });
 
 function ChatPage() {
     const [isConnected, setIsConnected] = useState(socket.disconnected);
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
         socket.on('connect', (data) => {
@@ -27,17 +28,18 @@ function ChatPage() {
         }); 
 
         return () => {
-            socket.disconnect();
+            // socket.connected();
         }
     }, []);
 
-    const sendMessage = (data) => {
-        socket.emit("message", { "MESSAGE": data }); // emits an event
+    const sendMessage = () => {
+        socket.emit("send_message", { message }); // emits an event
+        setMessage("");
     };
 
     return (
         <main>
-            <input placeholder="Message..." type="text" className={styles.enter} />
+            <input onChange={(e) => setMessage(e.target.value)} placeholder="Message..." type="text" className={styles.enter} />
             <button onClick={sendMessage} className={styles.send}>Send Message</button>
 
             <p>WebSocket: {'' + isConnected.toString()}</p>
