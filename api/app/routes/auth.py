@@ -73,6 +73,6 @@ def logout():
 @auth.route("/is_authenticated", methods=["GET"])
 @login_required
 def is_authenticated():
-    return jsonify(True), 200
+    return jsonify(current_user.to_json()), 200
 
 

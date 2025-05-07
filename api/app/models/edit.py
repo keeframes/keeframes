@@ -1,4 +1,5 @@
-from .extensions import db, get_uuid, get_timestamp
+from datetime import datetime
+from .extensions import db, get_uuid
 from .relationships import edit_hashtags, edit_likes
 from ..utils.edit import sign_edit_url
 
@@ -6,7 +7,7 @@ from ..utils.edit import sign_edit_url
 class Edit(db.Model):
     id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
     caption = db.Column(db.String(100), nullable=True)
-    timestamp = db.Column(db.Integer, default=get_timestamp)
+    created_at = db.Column(db.DateTime, default=datetime.now())
     user_id = db.Column(db.String(32), db.ForeignKey("user.id"), nullable=False)
     software_id = db.Column(db.String(32), db.ForeignKey("software.id"), nullable=False)
 
@@ -32,5 +33,5 @@ class Edit(db.Model):
             "caption": self.caption,
             "url": self.signed_url,
             "user": self.user.to_json(),
-            "timestamp": self.timestamp
+            "created_at": self.created_at
         }
