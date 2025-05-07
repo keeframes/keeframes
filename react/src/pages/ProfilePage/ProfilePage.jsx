@@ -15,7 +15,6 @@ export default function ProfilePage() {
     isError,
     error,
     isFetching,
-    refetch
   } = useQuery({
     queryKey: ["profile", username],
     queryFn: () => fetchProfile(username, user.username),
