@@ -1,3 +1,6 @@
+import httpClient from "./httpClient";
+import { CDN_URL } from "./constants";
+
 // grabs the first file from a list of files
 export const getFile = (files, filetypes) => {
   if (files && files.length > 0) {
@@ -6,7 +9,7 @@ export const getFile = (files, filetypes) => {
       if (filetypes.includes(file.type)) {
         // makes a url to the file
         file.url = URL.createObjectURL(file);
-        return file
+        return file;
       }
     }
   }
