@@ -38,6 +38,7 @@ def get_profile(username):
         profile["edit_count"] = user.get_edit_count()
         profile["est"] = est
         profile["is_following"] = False
+        profile["pfp_url"] = f"{id}.png" if user.hasPfp else "default.jpg"
 
         if currentUsername:
             currentUser = User.query.filter(User.username == currentUsername).first()

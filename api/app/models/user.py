@@ -120,6 +120,7 @@ class User(UserMixin, db.Model):
             "pronouns": self.pronouns,
             "bio": self.bio,
             "created_at": self.created_at,
+            "has_pfp": self.hasPfp
         }
 
 
