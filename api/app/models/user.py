@@ -20,6 +20,7 @@ class User(UserMixin, db.Model):
     pronouns = db.Column(db.String(20))
     bio = db.Column(db.String(150), default="")
     created_at = db.Column(db.DateTime, default=datetime.now())
+    hasPfp = db.Column(db.Boolean, default=False)
 
     edits = db.relationship(
         "Edit", back_populates="user", cascade="all, delete")
