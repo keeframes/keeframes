@@ -1,44 +1,72 @@
 import { useParams } from "react-router-dom";
+import ProfileDetails from "../../components/ProfileDetails/ProfileDetails";
+import { useCurrentUser } from "../../hooks/contexts";
 import styles from "./ProfilePage.module.css";
-import { CDN_URL } from "../../utils/constants";
-import Count from "../../components/Count/Count";
+import { fetchProfile } from "../../api/user";
+import { useQuery } from "@tanstack/react-query";
 
 export default function ProfilePage() {
+  const { user } = useCurrentUser();
   const { username } = useParams();
+
+  const {
+    data: profile,
+    isLoading,
+    isError,
+    error,
+    isFetching,
+    refetch
+  } = useQuery({
+    queryKey: ["profile", username],
+    queryFn: () => fetchProfile(username, user.username),
+    staleTime: 5 * 60 * 1000,
+  });
+
+  if (isLoading || isFetching) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    if (error.message === "PROFILE_NOT_FOUND") {
+      return <div>PROFILE NOT FOUND</div>;
+    }
+    return <div>Error</div>;
+  }
+
+  const SelectedButtons = () => {
+    // if this profile page is the current user's
+    if (user.username === username) {
+      return (
+        <>
+          <ProfileDetails.EditButton />
+        </>
+      );
+    }
+
+    // if the user is following the profile
+    if (profile.is_following) {
+      return (
+        <>
+          <ProfileDetails.UnfollowButton />
+          <ProfileDetails.MessageButton />
+        </>
+      );
+    }
+
+    // if the user is not following the profile
+    return (
+      <>
+        <ProfileDetails.FollowButton />
+        <ProfileDetails.MessageButton />
+      </>
+    );
+  };
 
   return (
     <section className={styles.container}>
-      <div className={styles.profile}>
-        <div className={styles.details}>
-          <div className={styles.pfp}>
-            <img src={`${CDN_URL}/static/pfp/default.jpg`} />
-          </div>
-          <div className={styles.content}>
-            <div className={styles.info}>
-              <div className={styles.header}>
-                <h1>Chris</h1>
-                <p className={styles.pronouns}>he/him</p>
-              </div>
-              <p className={styles.username}>@_rentengen</p>
-              <p className={styles.bio}>
-                Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et
-                massa mi. Aliquam in hendrerit urna. Pellentesque sit amet
-                sapien fringilla, mattis ligula consectetur, ultrices mauris.
-              </p>
-              <div className={styles.buttons}>
-                <button className={styles.follow}>Follow</button>
-                <button className={styles.message}>Message</button>
-              </div>
-              <p className={styles.est}>est. JAN 2025</p>
-            </div>
-            <div className={styles.counts}>
-              <Count label="Posts" number={20} />
-              <Count label="Followers" number={20} />
-              <Count label="Following" number={20} />
-            </div>
-          </div>
-        </div>
-      </div>
+      <ProfileDetails profile={profile}>
+        <SelectedButtons />
+      </ProfileDetails>
     </section>
   );
 }

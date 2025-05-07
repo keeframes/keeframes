@@ -33,5 +33,5 @@ class Edit(db.Model):
             "caption": self.caption,
             "url": self.signed_url,
             "user": self.user.to_json(),
-            "timestamp": self.timestamp
+            "created_at": self.created_at
         }
