@@ -61,63 +61,67 @@ function VideoThumbnailExtractor({ file, setVideo, thumbnail, setThumbnail }) {
       const ctx = canvas.getContext("2d");
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-      // get the thumbnail image from the canvas
-      const dataURL = canvas.toDataURL("image/png");
-      setThumbnail(dataURL);
+      // Convert canvas to a blob and wrap it in a File
+      canvas.toBlob((blob) => {
+        if (!blob) return;
+        const file = new File([blob], "thumbnail.png", { type: "image/png" });
+        setThumbnail(file);
+      }, "image/png");
     };
 
-    // adds an event listener
-    video.addEventListener("seeked", handleSeeked);
-  };
+  // adds an event listener
+  video.addEventListener("seeked", handleSeeked);
+};
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.row}>
-        <h2>{file.name}</h2>
-        <video
-          className={styles.edit}
-          src={file.url}
-          ref={videoRef}
-          crossOrigin="anonymous"
-          preload="metadata"
-          onLoadedMetadata={captureThumbnail}
-          controls
-        />
-        <IconButton Icon={ArrowCycle} onClick={handleClick} name="video">
-          Replace
-        </IconButton>
-        <input
-          type="file"
-          id="file"
-          accept=".mp4"
-          className="hide"
-          onChange={handleVideoUpload}
-          ref={videoInputRef}
-        />
-      </div>
-      <div className={styles.row}>
-        <h2>Thumbnail</h2>
-        <p className={styles.instructions}>
-          Seek to change the thumbnail or upload your own.
-        </p>
-        <div className={styles.thumbnail}>
-          <img src={thumbnail} alt="Thumbnail" />
-        </div>
-        <canvas ref={canvasRef} className={styles.canvas} />
-        <IconButton Icon={Picture} onClick={handleClick} name="thumbnail">
-          Select Thumbnail
-        </IconButton>
-        <input
-          type="file"
-          id="file"
-          accept=".png, .jpg"
-          className="hide"
-          onChange={handleThumbnailUpload}
-          ref={thumbnailInputRef}
-        />
-      </div>
+return (
+  <div className={styles.container}>
+    <div className={styles.row}>
+      <h2>{file.name}</h2>
+      <video
+        className={styles.edit}
+        src={file.url}
+        ref={videoRef}
+        crossOrigin="anonymous"
+        preload="metadata"
+        onLoadedMetadata={captureThumbnail}
+        controls
+      />
+      <IconButton Icon={ArrowCycle} onClick={handleClick} name="video">
+        Replace
+      </IconButton>
+      <input
+        type="file"
+        id="file"
+        accept=".mp4"
+        className="hide"
+        onChange={handleVideoUpload}
+        ref={videoInputRef}
+      />
     </div>
-  );
+    <div className={styles.row}>
+      <h2>Thumbnail</h2>
+      <p className={styles.instructions}>
+        Seek to change the thumbnail or upload your own.
+      </p>
+      <div className={styles.thumbnail}>
+          <img src={thumbnail instanceof File ? URL.createObjectURL(thumbnail) : thumbnail} alt="Thumbnail" />
+
+      </div>
+      <canvas ref={canvasRef} className={styles.canvas} />
+      <IconButton Icon={Picture} onClick={handleClick} name="thumbnail">
+        Select Thumbnail
+      </IconButton>
+      <input
+        type="file"
+        id="file"
+        accept=".png, .jpg"
+        className="hide"
+        onChange={handleThumbnailUpload}
+        ref={thumbnailInputRef}
+      />
+    </div>
+  </div>
+);
 }
 
 export default VideoThumbnailExtractor;

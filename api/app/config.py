@@ -8,6 +8,7 @@ load_dotenv(verbose=True, override=True)
 
 class ApplicationConfig:
     SECRET_KEY = os.getenv("SECRET_KEY")
+    MAX_CONTENT_LENGTH = 1000 * 1024 * 1024
 
     DB_USERNAME = os.getenv("DB_USERNAME")
     DB_PASSWORD = os.getenv("DB_PASSWORD")

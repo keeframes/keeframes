@@ -9,7 +9,6 @@ import VideoThumbnailExtractor from "../../components/VideoThumbnailExtractor/Vi
 function CreatePage() {
   const [video, setVideo] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
-  const [hashtag, setHashtag] = useState(null);
   const [details, setDetails] = useState({
     caption: "",
     hashtags: ["amv", "edit", "tests",],
@@ -17,8 +16,12 @@ function CreatePage() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const form = new FormData(e.target)
-    httpClient.post(`${API_URL}/edit`, form)
+    const form = new FormData()
+    form.append("video", video)
+    form.append("thumbnail", thumbnail)
+    console.log(thumbnail)
+    form.append("caption", details.caption)
+    httpClient.post(`${API_URL}/edit/thumbnail_test`, form)
   }
 
   return (
@@ -41,6 +44,7 @@ function CreatePage() {
         <section className={styles.formSection}>
           <DetailsForm values={details} setValues={setDetails}/>
           
+      <button onClick={handleSubmit}>THUMBNAIL TESTER</button>
         </section>
       </div>
     </>

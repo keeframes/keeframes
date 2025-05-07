@@ -67,3 +67,18 @@ def create_edit():
 
     logger.info(f"Successfully uploaded edit {edit.id}")
     return jsonify({"message": "success"}), 200
+
+
+@edit.route("/edit/thumbnail_test", methods=["POST"])
+def thumbnail_test():
+    thumbnail = request.files.get("thumbnail")
+
+    """
+    when uploading to s3 check to see what bucket
+    the bucket should be the static bucket which is
+    called edits-static.
+
+    the url where all thumbnails go will be
+    edits/static/thumbnails/edit-id.png or jpg
+    """
+    print(thumbnail)

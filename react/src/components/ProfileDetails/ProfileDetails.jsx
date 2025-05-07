@@ -10,7 +10,7 @@ export default function ProfileDetails({ profile, children }) {
     <div className={styles.profile}>
       <div className={styles.details}>
         <div className={styles.pfp}>
-          <img src={`${CDN_URL}/static/pfp/default.jpg`} />
+          <img src={`${CDN_URL}/static/pfp/${profile.pfp_url}`} />
         </div>
         <div className={styles.content}>
           <div className={styles.info}>
