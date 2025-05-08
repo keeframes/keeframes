@@ -1,6 +1,5 @@
 from datetime import datetime
 from .extensions import db, get_uuid
-from .relationships import edit_hashtags, edit_likes
 from ..utils.edit import sign_edit_url
 
 
@@ -12,12 +11,8 @@ class Edit(db.Model):
     software_id = db.Column(db.String(32), db.ForeignKey("software.id"), nullable=False)
 
     user = db.relationship("User", back_populates="edits", cascade="all, delete")
-    likes = db.relationship("User", secondary=edit_likes, back_populates="liked_edits")
     software = db.relationship("Software", back_populates="edits", cascade="all, delete")
     comments = db.relationship("Comment", back_populates="edit", cascade="all, delete")
-    hashtags = db.relationship(
-        "Hashtag", secondary=edit_hashtags, back_populates="edits"
-    )
 
     @property
     def key(self):

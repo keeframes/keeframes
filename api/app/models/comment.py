@@ -12,11 +12,3 @@ class Comment(db.Model):
 
     user = db.relationship("User", back_populates="comments", cascade="all, delete")
     edit = db.relationship("Edit", back_populates="comments", cascade="all, delete")
-
-    liked_comments = db.relationship("Comment", secondary=comment_likes)
-
-    replies = db.relationship(
-        "Comment",
-        backref=db.backref("parent", remote_side=[id]),
-        cascade="all, delete"
-    )

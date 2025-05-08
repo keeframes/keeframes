@@ -14,3 +14,28 @@ export const getFile = (files, filetypes) => {
     }
   }
 };
+
+
+export function makeURL(baseUrl, routeParam = null, queryParams = {}) {
+  let url = baseUrl;
+
+  // if route param then encode it and append it
+  // eg. "url/test route" -> "url/test%20route"
+  if (routeParam) {
+    url += `/${encodeURIComponent(routeParam)}`;
+  }
+
+  // remove null or undefined query parameters
+  const cleanedParams = Object.fromEntries(
+    Object.entries(queryParams).filter(([_, v]) => v != null)
+  );
+
+  const queryString = new URLSearchParams(cleanedParams).toString();
+
+  if (queryString) {
+    url += `?${queryString}`;
+  }
+
+  return url;
+}
+

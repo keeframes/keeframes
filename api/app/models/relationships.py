@@ -9,15 +9,15 @@ edit_hashtags = db.Table(
 
 edit_likes = db.Table(
     "edit_likes",
-    db.Column("user_id", db.String(32), db.ForeignKey("user.id")),
-    db.Column("edit_id", db.String(32), db.ForeignKey("edit.id"))
+    db.Column("user_id", db.String(32), db.ForeignKey("user.id", ondelete="CASCADE")),
+    db.Column("edit_id", db.String(32), db.ForeignKey("edit.id", ondelete="CASCADE"))
 )
 
 comment_likes = db.Table(
     "comment_likes",
-    db.Column("user_id", db.String(32), db.ForeignKey("user.id")),
-    db.Column("edit_id", db.String(32), db.ForeignKey("edit.id")),
-    db.Column("comment_id", db.String(32), db.ForeignKey("comment.id"))
+    db.Column("user_id", db.String(32), db.ForeignKey("user.id", ondelete="CASCADE")),
+    db.Column("edit_id", db.String(32), db.ForeignKey("edit.id", ondelete="CASCADE")),
+    db.Column("comment_id", db.String(32), db.ForeignKey("comment.id", ondelete="CASCADE"))
 )
 
 user_follows = db.Table(

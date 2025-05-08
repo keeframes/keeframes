@@ -13,10 +13,16 @@ from .socketio import socketio
 import logging
 
 logging.basicConfig(
-    filename='record.log',
     level=logging.DEBUG,
-    format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s'
+    format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    handlers=[
+        logging.FileHandler("app.log"),
+        logging.StreamHandler()  # Also logs to console
+    ]
 )
+
+logger = logging.getLogger(__name__)
 
 # add config to app
 app = Flask(__name__)
@@ -54,3 +60,5 @@ def load_user(user_id):
 
 # manual socketio app init
 socketio.init_app(app) 
+
+logger.info("test")

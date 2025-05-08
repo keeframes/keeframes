@@ -119,7 +119,40 @@ def unfollow_user():
         follower.unfollow_user(followed)
     except Exception as e:
         db.session.rollback()
-        print(e)
+        logger.error(e)
         return jsonify({"error": "Internal server error has occured"}), 500
 
     return jsonify({"success": True}), 201
+
+
+@user_bp.route("/user/exists", methods=["GET"])
+def check_user_exists():
+    username = request.args.get("username")
+    id = request.args.get("id")
+    email = request.args.get("email")
+
+    messages = []
+    try:
+        query = User.query
+
+        if username:
+            query = query.filter_by(username=username)
+            messages.append("USERNAME_EXISTS")
+        if id:
+            query = query.filter_by(id=id)
+            messages.append("ID_EXISTS")
+        if email:
+            query = query.filter_by(email=email)
+            messages.append("EMAIL_EXISTS")
+
+        user = query.first()
+
+        if not user:
+            return jsonify({"messages": ["USER_NOT_EXISTS"]}), 200
+        else:
+            messages.append("USER_EXISTS")
+    except Exception as e:
+        logger.error(e)
+        return jsonify("Internal server error has occured"), 500
+
+    return jsonify({"messages": messages}), 200

@@ -84,7 +84,7 @@ button:hover {
   filter: brightness(1.2);
 }
 
-textarea {
+textarea, input {
   background-color: var(--secondary);
   padding: 1rem;
   width: 100%;
@@ -96,3 +96,18 @@ textarea {
   color: var(--text);
   resize: vertical;
 }
+
+.form-row {
+  position: relative;
+  width: 100%;
+}
+
+.form-row > label {
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  background-color: var(--secondary);
+  padding: 0 10px;
+}
+
+

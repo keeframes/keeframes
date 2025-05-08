@@ -1,4 +1,5 @@
 import { API_URL } from "../utils/constants";
+import { makeURL } from "../utils/helpers";
 import httpClient from "../utils/httpClient";
 
 export async function fetchProfile(username, currentUsername=null) {
@@ -51,5 +52,15 @@ export async function unfollowUser(username=null, id=null) {
     }
   } catch (error) {
     throw new Error(error.error)
+  }
+}
+
+export async function checkUserExists(username=null, id=null, email=null) {
+  try {
+    const url = makeURL(`${API_URL}/user/exists`, null, {username, id, email});
+    const response = await httpClient.get(url);
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
   }
 }
