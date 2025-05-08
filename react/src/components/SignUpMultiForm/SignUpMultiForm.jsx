@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormSteps } from "../../hooks/useFormSteps";
 import AccountForm from "../AccountForm/AccountForm";
 import PersonalForm from "../PersonalForm/PersonalForm";
@@ -41,6 +41,11 @@ export default function SignUpMultiForm() {
   // dereferencing the controls into specific variables
   const { next, prev, currentStepIndex, Step, isFirst, isLast, goTo } =
     stepControls;
+
+  // REMOVE THIS
+  useEffect(() => {
+    goTo(1)
+  }, [])
 
   // when the form is submitted
   // (whenever next or submit is pressed)
@@ -95,7 +100,7 @@ export default function SignUpMultiForm() {
   // when a button on the left bar is pressed it needs
   // to jump to the index but in a different way compared
   // to the next and back functions
-  const jumpTo = (index) => {
+  const jumpTo = async (index) => {
     // if we are pressing the same step then return nothing
     if (index === currentStepIndex) return;
 
@@ -104,7 +109,7 @@ export default function SignUpMultiForm() {
       // then we must validate its data
       // this is so that if we go back we dont have to validate the data
       if (index > currentStepIndex) {
-        Step.validate(data);
+        await Step.validate(data);
       }
 
       // then we go to the current step
