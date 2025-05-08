@@ -4,6 +4,7 @@ import { API_URL } from "../../utils/constants";
 import { useCurrentUser } from "../../hooks/contexts";
 import { io } from "socket.io-client";
 
+
 function ChatPage() {
     const [isConnected, setIsConnected] = useState(false);
     const [message, setMessage] = useState("");
@@ -11,7 +12,7 @@ function ChatPage() {
     const [joinedRoom, setJoinedRoom] = useState(false);
     const { user } = useCurrentUser();
     const socketRef = useRef(null);
-
+    const username = user.username; 
 
     useEffect(() => {
         // Only initialize socket once
@@ -30,8 +31,10 @@ function ChatPage() {
             setIsConnected(false);
         });
 
-        socketRef.current.on("chat", ({message, username}) => {
+        socketRef.current.on("chat", (data) => {
+            const { username, message } = data;
             setMessageList((list) => [...list, `${username}: ${message}`]);
+            console.log(`${username}, ${message}`);
         });
 
         return () => {
@@ -41,7 +44,8 @@ function ChatPage() {
 
     const sendMessage = () => {
         if (socketRef.current && message.trim()) {
-            socketRef.current.emit("send_message", { message });
+            socketRef.current.emit("send_message", { username, message });
+            console.log("BUTTON: " + message);
             setMessage("");
         }
     };
@@ -53,7 +57,7 @@ function ChatPage() {
         } else {
             setJoinedRoom(true);
             socketRef.current.connect();
-            socketRef.current.emit("user_join", user.username);
+            socketRef.current.emit("user_join", username);
         }
     };
 
