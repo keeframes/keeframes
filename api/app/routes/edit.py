@@ -4,72 +4,73 @@ from flask import jsonify, request, Blueprint
 from flask_login import login_required, current_user
 from ..models.edit import Edit
 from ..models.extensions import db
+from ..utils.helpers import query_user
 
-edit = Blueprint("edit", __name__)
+edit_bp = Blueprint("edit", __name__)
 logger = logging.getLogger(__name__)
 
 
-@edit.route("/edit/<id>", methods=["GET"])
+@edit_bp.route("/edit/<id>", methods=["GET"])
 def get_edit(id):
-    try:
-        edit = Edit.query.get({"id": id})
+    # gets edit by id
+    edit = Edit.query.get({"id": id})
 
-        if not edit:
-            message = f"edit with id: {id} could not be found"
-            return jsonify({"error": message}), 400
-
-    except Exception as e:
-        db.session.rollback()
-        logger.error(e)
-        return jsonify({"error": "Internal server error occured"}), 500
+    if not edit:
+        return jsonify(error="EDIT_NOT_FOUND"), 404
 
     return jsonify(edit.to_json()), 200
 
 
-@edit.route("/edits", methods=["GET"])
+@edit_bp.route("/edits", methods=["GET"])
 def get_edits():
-    try:
-        # get all edits
-        edits = Edit.query.all()
-    except Exception as e:
-        db.session.rollback()
-        logger.error(e)
-        return jsonify({"error": "Internal server error occured"}), 500
+    # get a user
+    username = request.args.get("username")
+    user_id = request.args.get("user_id")
+    email = request.args.get("email")
 
-    return jsonify({"edits": [edit.to_json() for edit in edits]}), 200
+    user = query_user(user_id, username, email)
+
+    if not user:
+        return jsonify(error="USER_NOT_FOUND"), 404
+
+    # query for an edit
+    edit_query = Edit.query
+
+    if user:
+        edit_query = edit_query.filter_by(user=user)
+
+    # get all edits from query
+    edits = edit_query.all()
+
+    return jsonify([edit.to_json() for edit in edits]), 200
 
 
-@edit.route("/edit", methods=["POST"])
+@edit_bp.route("/edit", methods=["POST"])
 @login_required
 def create_edit():
     video = request.files.get("video")
     caption = request.form.get("caption")
 
-    try:
-        # add edit to a database
-        edit = Edit(caption=caption, user=current_user)
-        db.session.add(edit)
+    # add edit to a database
+    edit = Edit(caption=caption, user=current_user)
+    db.session.add(edit)
 
-        # this assigns an id to the edit without comitting it
-        db.session.flush()
+    # this assigns an id to the edit without comitting it
+    db.session.flush()
 
-        # upload edit object to s3 using edit id and user id as a key
-        s3_client = boto3.client("s3")
-        object_name = f"{current_user.id}/{edit.id}"
-        s3_client.upload_fileobj(video, "edits-dev", object_name)
+    # upload edit object to s3 using edit id and user id as a key
+    s3_client = boto3.client("s3")
+    object_name = f"{current_user.id}/{edit.id}"
+    s3_client.upload_fileobj(video, "edits-dev", object_name)
 
-        # commit changes
-        db.session.commit()
-    except Exception as e:
-        db.session.rollback()
-        logger.error(e)
-        return jsonify({"error": "Internal server error occured"}), 500
+    # commit changes
+    db.session.commit()
 
     logger.info(f"Successfully uploaded edit {edit.id}")
-    return jsonify({"message": "success"}), 200
+    return jsonify(edit.to_json()), 201
 
 
-@edit.route("/edit/thumbnail_test", methods=["POST"])
+@edit_bp.route("/edit/thumbnail_test", methods=["POST"])
 def thumbnail_test():
     thumbnail = request.files.get("thumbnail")
 

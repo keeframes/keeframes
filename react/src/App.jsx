@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import "./index.css";
 import Home from "./pages/HomePage/HomePage";
 import Login from "./pages/LoginPage/LoginPage";
-import SignUp from "./pages/SignUpPage/SignUpPage";
+import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import ProtectedRoutes from "./utils/protectedRoutes";
 import CreatePage from "./pages/CreatePostPage/CreatePostPage";
 import ChatPage from "./pages/ChatPage/ChatPage";
@@ -13,7 +13,7 @@ function App() {
   return (
     <UserProvider>
       <Routes>
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
         <Route element={<ProtectedRoutes />}>

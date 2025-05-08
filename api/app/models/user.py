@@ -1,17 +1,13 @@
 import bcrypt
 from datetime import datetime
 from flask_login import UserMixin
-from sqlalchemy.orm import aliased
 from .extensions import db, get_uuid
-from .relationships import edit_likes
 from .relationships import user_follows
 from .edit import Edit
 
 
 class User(UserMixin, db.Model):
-    id = db.Column(
-        db.String(32), primary_key=True, unique=True, default=get_uuid
-    )  # default=get_uuid ensures each user is uuid not normal autonumber
+    id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
     name = db.Column(db.String(100), nullable=False)
     username = db.Column(db.String(100), nullable=False, unique=True)
     email = db.Column(db.String(300), nullable=False, unique=True)
@@ -22,12 +18,8 @@ class User(UserMixin, db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now())
     hasPfp = db.Column(db.Boolean, default=False)
 
-    edits = db.relationship(
-        "Edit", back_populates="user", cascade="all, delete")
-    liked_edits = db.relationship(
-        "Edit", secondary=edit_likes, back_populates="likes")
-    comments = db.relationship(
-        "Comment", back_populates="user", cascade="all, delete")
+    edits = db.relationship("Edit", back_populates="user", cascade="all, delete")
+    comments = db.relationship("Comment", back_populates="user", cascade="all, delete")
 
     followers = db.relationship(
         "User",
@@ -120,7 +112,7 @@ class User(UserMixin, db.Model):
             "pronouns": self.pronouns,
             "bio": self.bio,
             "created_at": self.created_at,
-            "has_pfp": self.hasPfp
+            "has_pfp": self.hasPfp,
         }
 
 

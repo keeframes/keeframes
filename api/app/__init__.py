@@ -13,10 +13,16 @@ from .socketio import socketio
 import logging
 
 logging.basicConfig(
-    filename='record.log',
-    level=logging.DEBUG,
-    format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s'
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    handlers=[
+        logging.FileHandler("app.log"),
+        logging.StreamHandler()  # Also logs to console
+    ]
 )
+
+logger = logging.getLogger(__name__)
 
 # add config to app
 app = Flask(__name__)
@@ -40,6 +46,8 @@ migrate = Migrate(app, db)
 # registers all blueprints
 app.register_blueprint(routes)
 
+# manual socketio app init
+socketio.init_app(app)
 
 # just in case we have to remake db tables
 # with app.app_context():
@@ -52,5 +60,10 @@ app.register_blueprint(routes)
 def load_user(user_id):
     return User.query.get(user_id)
 
-# manual socketio app init
-socketio.init_app(app) 
+
+@app.errorhandler(Exception)
+def handle_exception(error):
+    db.session.rollback()
+    logging.exception(error)
+
+    return jsonify(error="INTERNAL_SERVER"), 500
