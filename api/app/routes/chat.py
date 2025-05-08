@@ -4,8 +4,6 @@ from flask_socketio import emit, send
 
 chat = Blueprint("chat", __name__)
 
-users = {}
-
 @socketio.on("connected")
 def handle_connect():
     """event listener when client connects to the server"""
@@ -17,16 +15,11 @@ def handle_connect():
 @socketio.on("user_join")
 def handle_user_join(username):
     print(f"user {username} joined")
-    users[username] = request.sid 
 
 @socketio.on("send_message")
-def handle_send(message):
-    print(f"new message: {message}")
-    username = None
-    for user in users:
-        if users[user] == request.sid:
-            username = user
-    emit("chat", {"message": message, "username": username}, broadcast=True)
+def handle_send(data):
+    print(f"new message from {data['username']}: {data['message']}")
+    emit("chat", data, broadcast=True)
 
 @socketio.on("disconnected")
 def handle_disconnect():
