@@ -1,42 +1,37 @@
 from flask import Blueprint, request, jsonify
-from flask_login import login_required, current_user
 from ..models.hashtag import Hashtag
-from ..models.extensions import db
+from ..utils.helpers import query_hashtag
 
-hashtag = Blueprint("hashtag", __name__)
+import logging
+
+hashtag_bp = Blueprint("hashtag", __name__)
+logger = logging.getLogger(__name__)
 
 
-@hashtag.route("/hashtag", methods=["GET"])
+@hashtag_bp.route("/hashtag", methods=["GET"])
 def get_hashtag():
     name = request.args.get("name")
     id = request.args.get("id")
 
-    if not name and not id:
-        return jsonify({"error": "No name or id was passed"}), 400
+    hashtag = query_hashtag(id, name)
 
-    if name:
-        hash = Hashtag.query.filter(Hashtag.name == name).first()
-        if hash:
-            return jsonify(hash.to_json()), 200
-    elif id:
-        hash = Hashtag.query.get({"id": id}).first()
-        if hash:
-            return jsonify(hash.to_json()), 200
+    if not hashtag:
+        return jsonify(error="HASHTAG_NOT_FOUND"), 404
 
-    return jsonify({"error": "Could not find requested software"}), 404
+    return jsonify(hashtag.to_json()), 200
 
 
-@hashtag.route("/hashtags", methods=["GET"])
+# TODO: NEED TO ADD FUNCTIONALITY TO GET HASHTAGS FOR AN EDIT
+@hashtag_bp.route("/hashtags", methods=["GET"])
 def get_hashtags():
     search = request.args.get("search")
+    # edit_id = request.args.get("edit_id")
+
+    query = Hashtag.query
 
     if search:
-        hashtags = Hashtag.query.filter(
-            Hashtag.name.icontains(search)
-        )
+        query = query.filter(Hashtag.name.icontains(search))
 
-        return jsonify([hash.to_json() for hash in hashtags]), 200
-
-    hashtags = Hashtag.query.all()
+    hashtags = query.all()
 
     return jsonify([hash.to_json() for hash in hashtags])

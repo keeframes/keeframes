@@ -17,9 +17,7 @@ class User(UserMixin, db.Model):
     bio = db.Column(db.String(150), default="")
     created_at = db.Column(db.DateTime, default=datetime.now())
     hasPfp = db.Column(db.Boolean, default=False)
-    gender = db.Column(db.String(20), default="other", nullable=False)
 
-    gender = db.relationship("Gender", back_populates="users")
     edits = db.relationship("Edit", back_populates="user", cascade="all, delete")
     comments = db.relationship("Comment", back_populates="user", cascade="all, delete")
 

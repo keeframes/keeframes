@@ -81,31 +81,11 @@ export default function AccountForm() {
 
 // returns an error if any of the inputs have bad data
 AccountForm.validate = async function validate(data) {
-  // validating if username exists and if email exists
   try {
-    // check if username exists if message equals USERNAME_EXISTS
-    const is_user = await checkUserExists(data.username);
-    const username_exists = is_user.messages.indexOf("USERNAME_EXISTS");
-
-    if (username_exists !== -1) {
-      throw new Error("USERNAME_EXISTS");
-    }
-
-    // check if email exists if message equals EMAIL_EXISTS
-    const is_email = await checkUserExists(data.email);
-    const email_exists = is_email.messages.indexOf("EMAIL_EXISTS");
-
-    if (email_exists !== -1) {
-      throw new Error("EMAIL_EXISTS");
-    }
+    await checkUserExists(data.username);
+    await checkUserExists(null, null, data.email);
   } catch (error) {
-    // throw an error if there is an internal server error
-    if (error.status === 500) {
-      throw new Error("INTERNAL_SERVER");
-    }
-
-    // makes sure that all previously thrown errors are passed out of the function
-    throw new Error(error.message)
+    throw error
   }
 
   // validates if password is > 8 characters

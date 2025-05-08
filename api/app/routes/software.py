@@ -4,79 +4,72 @@ from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
 from ..models.extensions import db
 from ..models.software import Software
+from ..utils.helpers import query_software
 
-software = Blueprint("software", __name__)
+software_bp = Blueprint("software", __name__)
 logger = logging.getLogger(__name__)
 
 
-@software.route("/software", methods=["GET"])
+@software_bp.route("/software", methods=["GET"])
 def get_software():
-    name = request.args.get("name")
     id = request.args.get("id")
+    name = request.args.get("name")
 
-    if not name and not id:
-        return jsonify({"error": "No name or id was passed"}), 400
+    software = query_software(id, name)
 
-    if name:
-        app = Software.query.filter(Software.name == name).first()
-        if app:
-            return jsonify(app.to_json()), 200
-    elif id:
-        app = Software.query.get({"id": id}).first()
-        if app:
-            return jsonify(app.to_json()), 200
+    if not software:
+        return jsonify(error="SOFTWARE_NOT_FOUND"), 404
 
-    return jsonify({"error": "Could not find requested software"}), 404
+    return jsonify(software.to_json()), 200
 
 
-@software.route("/softwares", methods=["GET"])
+@software_bp.route("/softwares", methods=["GET"])
 def get_all_software():
     t = request.args.get("type")
 
+    query = Software.query
+
     if t:
-        softwares = Software.query.filter(Software.type == t).all()
-    else:
-        softwares = Software.query.all()
+        query = query.filter_by(type=t)
 
-    return jsonify([s.to_json() for s in softwares])
+    software = query.all()
+
+    return jsonify([s.to_json() for s in software])
 
 
-@software.route("/software", methods=["POST"])
+@software_bp.route("/software", methods=["POST"])
 @login_required
 def create_software():
     image = request.files.get("image")
     t = request.form.get("type")
     name = request.form.get("name")
-    
-    extension = image.filename.split(".")[-1]
 
     if not t:
-        return jsonify("This software needs a type"), 400
+        return jsonify(error="NO_TYPE", message="This software needs a type (official or other)"), 400
 
     if not name:
-        return jsonify("This software needs a name"), 400
+        return jsonify(error="NO_NAME", message="This software needs a name"), 400
 
     if t != "other" and not image:
-        return jsonify({"error": "No image has been provided when the type is official"}), 409
+        return jsonify(error="NO_IMAGE", message="No image has been provided when the type is official"), 409
 
-    try:
-        # add software to db
-        s = Software(type=t, name=name)
-        db.session.add(s)
+    # formatting
+    t = t.lower()
 
-        # assigns an id to edit without committing
-        db.session.flush()
+    # add software to db
+    s = Software(type=t, name=name)
+    db.session.add(s)
 
-        if s.type != "other":
-            # upload image to s3
-            s3_client = boto3.client("s3")
-            object_name = f"static/software/{s.type}/{s.id}.{extension}"
-            s3_client.upload_fileobj(image, "edits-static", object_name)
+    # assigns an id to edit without committing
+    db.session.flush()
 
-        db.session.commit()
-    except Exception as e:
-        db.session.rollback()
-        logger.error(e)
-        return jsonify({"error": "Internal server error occured"})
+    if s.type != "other":
+        # upload image to s3
+        extension = image.filename.split(".")[-1]
+        s3_client = boto3.client("s3")
+        object_name = f"static/software/{s.type}/{s.id}.{extension}"
+        s3_client.upload_fileobj(image, "edits-static", object_name)
+
+    db.session.commit()
 
     return jsonify({"message": "success"}), 200

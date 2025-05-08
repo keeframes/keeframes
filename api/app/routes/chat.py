@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from ..socketio import socketio
 from flask_socketio import emit, send
 
-chat = Blueprint("chat", __name__)
+chat_bp = Blueprint("chat", __name__)
 
 @socketio.on("connected")
 def handle_connect():
