@@ -5,7 +5,7 @@ import styles from "./ProfilePage.module.css";
 import { fetchProfile } from "../../api/user";
 import { useQuery } from "@tanstack/react-query";
 
-export default function ProfilePage() {
+export default function Profile() {
   const { user } = useCurrentUser();
   const { username } = useParams();
 

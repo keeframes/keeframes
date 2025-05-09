@@ -5,7 +5,7 @@ import { useCurrentUser } from "../../hooks/contexts";
 import { io } from "socket.io-client";
 
 
-function ChatPage() {
+function Chat() {
     const [isConnected, setIsConnected] = useState(false);
     const [message, setMessage] = useState("");
     const [messageList, setMessageList] = useState([]);
@@ -90,4 +90,4 @@ function ChatPage() {
     );
 }
 
-export default ChatPage;
+export default Chat;

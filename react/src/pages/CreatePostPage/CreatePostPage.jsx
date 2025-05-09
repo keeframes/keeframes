@@ -6,7 +6,7 @@ import { useState } from "react";
 import DetailsForm from "../../components/DetailsForm/DetailsForm";
 import VideoThumbnailExtractor from "../../components/VideoThumbnailExtractor/VideoThumbnailExtractor";
 
-function CreatePage() {
+function Create() {
   const [video, setVideo] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
   const [details, setDetails] = useState({
@@ -51,4 +51,4 @@ function CreatePage() {
   );
 }
 
-export default CreatePage;
+export default Create;
