@@ -4,6 +4,7 @@ from flask_login import current_user, login_required
 from datetime import datetime
 from ..models.user import load_all_users
 from ..models.user import User
+from ..models.enums import UserGender
 from ..utils.helpers import query_user
 
 user_bp = Blueprint("users", __name__)
@@ -95,10 +96,16 @@ def check_user_exists():
         return "USER_NOT_FOUND", 200
 
     if username:
-        return jsonify(error="USERNAME_EXISTS"), 409
+        return jsonify(error="Username already exists"), 409
     if email:
-        return jsonify(error="EMAIL_EXISTS"), 409
+        return jsonify(error="Email already exists"), 409
     if id:
-        return jsonify(error="ID_EXISTS"), 409
+        return jsonify(error="ID already exists"), 409
 
     return "USER_EXISTS", 200
+
+
+@user_bp.route("/user/genders", methods=["GET"])
+def get_genders():
+    enum_values = [e.value for e in UserGender]
+    return jsonify(enum_values), 200
