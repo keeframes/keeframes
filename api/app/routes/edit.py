@@ -5,6 +5,7 @@ from flask_login import login_required, current_user
 from ..models.edit import Edit
 from ..models.extensions import db
 from ..utils.helpers import query_user
+from ..utils.compression import img_compression
 
 edit_bp = Blueprint("edit", __name__)
 logger = logging.getLogger(__name__)
@@ -50,6 +51,10 @@ def get_edits():
 def create_edit():
     video = request.files.get("video")
     caption = request.form.get("caption")
+    thumbnail = request.files.get("thumbnail")
+
+    if not video or not caption or not thumbnail:
+        return jsonify(error="MISSING_FIELDS"), 400
 
     # add edit to a database
     edit = Edit(caption=caption, user=current_user)
@@ -63,6 +68,13 @@ def create_edit():
     object_name = f"{current_user.id}/{edit.id}"
     s3_client.upload_fileobj(video, "edits-dev", object_name)
 
+    compressed_thumbnail = img_compression(thumbnail)
+    compressed_thumbnail.seek(0) # rewind bytesio to 0 pre upload
+
+    # thumbnail upload to s3 static bucket
+    thumb_key = f"static/thumbnails/{current_user.id}/{edit.id}.png"
+    s3_client.upload_fileobj(compressed_thumbnail, "edits-static", thumb_key, ExtraArgs={"ContentType": "image/png"})    
+
     # commit changes
     db.session.commit()
 
@@ -70,9 +82,21 @@ def create_edit():
     return jsonify(edit.to_json()), 201
 
 
-@edit_bp.route("/edit/thumbnail_test", methods=["POST"])
-def thumbnail_test():
+@edit_bp.route("/edit/thumbnail", methods=["POST"])
+def thumbnail():
     thumbnail = request.files.get("thumbnail")
+    db.session.add(thumbnail)
+    
+    # upload edit object to s3 using edit id and user id as a key
+    s3_client = boto3.client("s3")
+    compressed_thumbnail = img_compression(thumbnail)
+    compressed_thumbnail.seek(0) # rewind bytesio to 0 pre upload
+
+    # thumbnail upload to s3 static bucket
+    thumb_key = f"static/thumbnails/{current_user.id}/TEST1.png"
+    s3_client.upload_fileobj(compressed_thumbnail, "edits-static", thumb_key, ExtraArgs={"ContentType": "image/png"})    
+
+    db.session.commit()
 
     """
     when uploading to s3 check to see what bucket
@@ -82,4 +106,6 @@ def thumbnail_test():
     the url where all thumbnails go will be
     edits/static/thumbnails/edit-id.png or jpg
     """
-    print(thumbnail)
+    
+    logger.info(f"Successfully uploaded a thumbnail.")
+    return jsonify({"thumbnail": thumbnail}), 201
