@@ -10,7 +10,8 @@ function Home() {
   useEffect(() => {
     const getEdits = async () => {
       const response = await httpClient.get(`${API_URL}/edits`);
-      setEdits(response.data.edits);
+      console.log(response.data)
+      setEdits(response.data);
     }
     getEdits()
   }, []);

@@ -84,7 +84,7 @@ button:hover {
   filter: brightness(1.2);
 }
 
-textarea, input {
+textarea, input, select {
   background-color: var(--secondary);
   padding: 1rem;
   width: 100%;

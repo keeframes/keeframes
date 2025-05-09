@@ -2,8 +2,11 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_user, logout_user, login_required, current_user
 from ..models.extensions import db
 from ..models.user import User
+from ..models.enums import UserGender
+from ..utils.helpers import query_software
 
 import logging
+import boto3
 
 auth_bp = Blueprint("auth", __name__)
 logger = logging.getLogger(__name__)
@@ -12,29 +15,55 @@ logger = logging.getLogger(__name__)
 # TODO: NEED TO CHANGE THIS TO WORK WITH NEW FORM LAYOUT
 @auth_bp.route("/signup", methods=["POST"])
 def signup():
-    # get signup values from body
-    name = request.json.get("name")
-    username = request.json.get("username")
-    email = request.json.get("email")
-    password = request.json.get("password")
+    name = request.form.get("fullname")
+    username = request.form.get("username")
+    email = request.form.get("email")
+    bio = request.form.get("bio")
+    age = request.form.get("age")
 
-    user_exists = User.query.filter_by(email=email).first() is not None
+    password = request.form.get("password")
+    gender = request.form.get("gender")
+    pronouns = request.form.get("pronouns")
+    custom_pronouns = request.form.get("customPronouns")
+    software = request.form.get("software")
+    pfp = request.files.get("pfp")
 
-    if user_exists:
-        return jsonify(error="User already exists"), 409
+    user = User(name=name, username=username, email=email, age=int(age), bio=bio)
 
-    new_user = User(email=email, name=name, username=username)
-    new_user.set_password(password)
+    # sets the password
+    user.set_password(password)
 
-    db.session.add(new_user)
+    # sets the gender
+    user.gender = UserGender(gender)
+
+    # sets the pronouns
+    if pronouns == "custom":
+        user.pronouns = custom_pronouns
+    else:
+        user.pronouns = pronouns
+
+    # sets the software
+    if software:
+        user.software_id = software
+
+    # sets the bio
+    if bio:
+        user.bio = bio
+
+    if pfp:
+        user.has_pfp = True
+        db.session.add(user)
+        db.session.flush()
+
+        s3_client = boto3.client("s3")
+        object_name = f"static/pfp/{user.id}.png"
+        s3_client.upload_fileobj(pfp, "edits-static", object_name)
+    else:
+        db.session.add(user)
+
     db.session.commit()
 
-    return jsonify({
-        "success": True,
-        "user_id": new_user.id,
-        "name": new_user.name,
-        "email": new_user.email,
-    }), 201
+    return jsonify("Successfully created user"), 200
 
 
 @auth_bp.route("/login", methods=["POST"])

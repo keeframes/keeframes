@@ -1,5 +1,6 @@
 import httpClient from "../utils/httpClient";
 import {API_URL} from "../utils/constants";
+import { populateFormData } from "../utils/helpers";
 
 class AuthService {
   login(email, password) {
@@ -17,13 +18,9 @@ class AuthService {
     return httpClient.get(`${API_URL}/is_authenticated`);
   }
 
-  signup(name, username, email, password) {
-    return httpClient.post(`${API_URL}/signup`, {
-      name,
-      username,
-      email,
-      password,
-    });
+  signup(data) {
+    const form = populateFormData(data);
+    return httpClient.post(`${API_URL}/signup`, form);
   }
 
   is_user(email) {

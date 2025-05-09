@@ -39,3 +39,21 @@ export function makeURL(baseUrl, routeParam = null, queryParams = {}) {
   return url;
 }
 
+
+// Function to populate FormData with INITIAL_DATA
+export const populateFormData = (data) => {
+  const form = new FormData()
+  for (let key in data) {
+    // Skip the key if it's undefined or null
+    if (data[key] !== null && data[key] !== undefined) {
+      // If the key represents a file (like profile picture), append it as a file
+      if (key === "pfp" && data[key] instanceof File) {
+        form.append(key, data[key]);
+      } else {
+        form.append(key, data[key]);
+      }
+    }
+  }
+  return form;
+};
+

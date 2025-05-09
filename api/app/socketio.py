@@ -1,4 +1,5 @@
 from flask_socketio import SocketIO
+from .utils.constants import FRONTEND_URL
 
 # creates an accessible socketio instance 
-socketio = SocketIO(cors_allowed_origins=["http://localhost:5173"], logger=True) 
+socketio = SocketIO(cors_allowed_origins=[FRONTEND_URL], logger=True) 

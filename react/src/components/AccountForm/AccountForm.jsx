@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { checkUserExists } from "../../api/user";
 import styles from "./AccountForm.module.css";
 import { useSignUp } from "../../hooks/contexts";
+import accountSchema from "../../validation/accountValidation";
 
 export default function AccountForm() {
   const { data, handleChange, error } = useSignUp();
@@ -10,26 +10,8 @@ export default function AccountForm() {
   const Errors = () => {
     if (!error) return;
 
-    if (error === "USERNAME_EXISTS") {
-      return <p className="error">This username exists</p>
-    }
-
-    if (error === "EMAIL_EXISTS") {
-      return <p className="error">This email exists</p>
-    }
-
-    if (error === "PASS_NOT_STRONG") {
-      return <p className="error">The password must be at least 8 characters</p>
-    }
-
-    if (error === "PASS_NOT_EQUAL") {
-      return <p className="error">Passwords do not match up</p>
-    }
-
-    if (error === "INTERNAL_SERVER") {
-      return <p className="error">Internal server error</p>
-    }
-  };
+    return <p className="error">{error}</p>
+  }
 
   return (
     <>
@@ -84,17 +66,13 @@ AccountForm.validate = async function validate(data) {
   try {
     await checkUserExists(data.username);
     await checkUserExists(null, null, data.email);
+    accountSchema.parse(data);
   } catch (error) {
-    throw error
-  }
-
-  // validates if password is > 8 characters
-  if (data.password.length < 8) {
-    throw new Error("PASS_NOT_STRONG");
-  }
-
-  // validates if password is equal to confirm password
-  if (data.password !== data.confirmPassword) {
-    throw new Error("PASS_NOT_EQUAL");
+    // this means that this is a zod error
+    if (error.errors) {
+      throw new Error(error.errors[0].message)
+    } else {
+      throw error
+    }
   }
 };

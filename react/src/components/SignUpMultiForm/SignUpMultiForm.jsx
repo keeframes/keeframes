@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormSteps } from "../../hooks/useFormSteps";
 import AccountForm from "../AccountForm/AccountForm";
 import PersonalForm from "../PersonalForm/PersonalForm";
@@ -6,6 +6,8 @@ import ProfileForm from "../ProfileForm/ProfileForm";
 import StepBar from "../StepBar/StepBar";
 import styles from "./SignUpMultiForm.module.css";
 import { SignUpProvider } from "../../contexts/SignUpContext";
+import authService from "../../api/authService";
+import { useNavigate } from "react-router-dom";
 
 const INITIAL_DATA = {
   username: "",
@@ -13,12 +15,13 @@ const INITIAL_DATA = {
   password: "",
   confirmPassword: "",
   fullname: "",
-  gender: "",
-  age: "",
-  pronouns: "",
+  gender: "male",
+  age: 0,
+  pronouns: "he/him",
+  customPronouns: "",
   pfp: null,
   bio: "",
-  software: [],
+  software: "",
 };
 
 // some keywords
@@ -31,6 +34,7 @@ const INITIAL_DATA = {
 // goTo = function for jumping between steps
 
 export default function SignUpMultiForm() {
+  const navigate = useNavigate();
   const [data, setData] = useState(INITIAL_DATA);
   const [error, setError] = useState(null);
   const stepNames = ["Account", "Personal", "Profile"];
@@ -54,11 +58,28 @@ export default function SignUpMultiForm() {
       // moves onto the next step if if not is last step
       if (!isLast) {
         next();
+      } else {
+        // TODO: NEED TO SUBMIT THE FORM HERE
+        console.log(data)
+        authService
+          .signup(data)
+          .then(() => {
+            authService.login(data.email, data.password).then(() => navigate("/"));
+          })
+          .catch((error) => {
+            if (error.status === 401) {
+              setError("invalid-credentials");
+            } else if (error.status === 500) {
+              setError("server-error");
+            } else if (error.status === 404) {
+              setError("connection-error");
+            }
+          });
       }
-      // TODO: NEED TO SUBMIT THE FORM HERE
     } catch (error) {
       // sets the error message
       setError(error.message);
+      throw error
     }
   };
 
@@ -95,7 +116,7 @@ export default function SignUpMultiForm() {
   // when a button on the left bar is pressed it needs
   // to jump to the index but in a different way compared
   // to the next and back functions
-  const jumpTo = (index) => {
+  const jumpTo = async (index) => {
     // if we are pressing the same step then return nothing
     if (index === currentStepIndex) return;
 
@@ -104,7 +125,7 @@ export default function SignUpMultiForm() {
       // then we must validate its data
       // this is so that if we go back we dont have to validate the data
       if (index > currentStepIndex) {
-        Step.validate(data);
+        await Step.validate(data);
       }
 
       // then we go to the current step

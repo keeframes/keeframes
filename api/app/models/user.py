@@ -3,21 +3,25 @@ from datetime import datetime
 from flask_login import UserMixin
 from .extensions import db, get_uuid
 from .relationships import user_follows
+from .enums import UserGender
 from .edit import Edit
 
 
 class User(UserMixin, db.Model):
     id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
-    name = db.Column(db.String(100), nullable=False)
-    username = db.Column(db.String(100), nullable=False, unique=True)
-    email = db.Column(db.String(300), nullable=False, unique=True)
+    name = db.Column(db.String(40), nullable=False)
+    username = db.Column(db.String(40), nullable=False, unique=True)
+    email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.Text)
-    admin = db.Column(db.Boolean, default=False)
-    pronouns = db.Column(db.String(20))
+    age = db.Column(db.Integer(), nullable=False)
+    pronouns = db.Column(db.String(20), nullable=False)
     bio = db.Column(db.String(150), default="")
     created_at = db.Column(db.DateTime, default=datetime.now())
-    hasPfp = db.Column(db.Boolean, default=False)
+    has_pfp = db.Column(db.Boolean, default=False, nullable=False)
+    gender = db.Column(db.Enum(UserGender), default=UserGender.PREFER, nullable=False)
+    software_id = db.Column(db.String(32), db.ForeignKey("software.id"))
 
+    software = db.relationship("Software")
     edits = db.relationship("Edit", back_populates="user", cascade="all, delete")
     comments = db.relationship("Comment", back_populates="user", cascade="all, delete")
 
@@ -62,7 +66,7 @@ class User(UserMixin, db.Model):
 
     # gets edit count
     def get_edit_count(self):
-        return Edit.query.count()
+        return Edit.query.filter_by(user=self).count()
 
     # checks whether a user is following another user
     def is_following(self, other):
@@ -112,7 +116,7 @@ class User(UserMixin, db.Model):
             "pronouns": self.pronouns,
             "bio": self.bio,
             "created_at": self.created_at,
-            "has_pfp": self.hasPfp,
+            "has_pfp": self.has_pfp,
         }
 
 

@@ -1,12 +1,41 @@
-import styles from "./PersonalForm.module.css"
+import styles from "./PersonalForm.module.css";
 import { useSignUp } from "../../hooks/contexts";
+import personalSchema from "../../validation/personalValidation";
+import PronounsSelect from "../PronounsSelect/PronounsSelect";
+
+const onlyAllowNumbers = (e) => {
+  if (
+    [
+      "Backspace",
+      "Delete",
+      "Tab",
+      "Escape",
+      "Enter",
+      "ArrowLeft",
+      "ArrowRight",
+    ].includes(e.key)
+  ) {
+    return;
+  }
+  if (!/[0-9]/.test(e.key)) {
+    e.preventDefault();
+  }
+};
 
 export default function PersonalForm() {
-  const { data, handleChange } = useSignUp();
+  const { data, handleChange, error } = useSignUp();
+
+  // shows appropriate error based on error state
+  const Errors = () => {
+    if (!error) return;
+
+    return <p className="error">{error}</p>
+  }
 
   return (
     <>
       <h1>Personal Details</h1>
+      <Errors />
       <div className="form-row">
         <label htmlFor="fullname">Name</label>
         <input
@@ -20,14 +49,17 @@ export default function PersonalForm() {
       </div>
       <div className="form-row">
         <label htmlFor="gender">Gender</label>
-        <input
-          type="text"
+        <select
           name="gender"
-          value={data.gender}
-          onChange={handleChange}
           required
-          autoFocus
-        />
+          onChange={handleChange}
+          value={data.gender}
+        >
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="prefer not to say">Prefer not to say</option>
+          <option value="other">Other</option>
+        </select>
       </div>
       <div className="form-row">
         <label htmlFor="age">Age</label>
@@ -35,39 +67,34 @@ export default function PersonalForm() {
           type="number"
           name="age"
           value={data.age}
+          min="0"
+          max="130"
+          inputMode="numeric"
+          onKeyDown={onlyAllowNumbers}
           onChange={handleChange}
           required
-          autoFocus
         />
       </div>
       <div className="form-row">
         <label htmlFor="pronouns">Pronouns</label>
-        <input
-          type="text"
-          name="pronouns"
-          value={data.pronuns}
-          onChange={handleChange}
+        <PronounsSelect
           required
-          autoFocus
+          data={data}
+          onChange={handleChange}
         />
       </div>
+      <PronounsSelect.Input data={data} handleChange={handleChange}/>
     </>
   );
 }
 
-export const validatePersonalData = (data) => {
-  if (data.password.length < 8) {
-    throw new Error("PASS_NOT_STRONG");
-  }
-
-  if (data.password !== data.confirmPassword) {
-    throw new Error("PASS_NOT_EQUAL");
-  }
-
-  async () => {
-    try {
-     
-    } catch (error) {
+PersonalForm.validate = function validate(data) {
+  try {
+    console.log(data)
+    personalSchema.parse(data)
+  } catch (error) {
+    if (error.errors) {
+      throw new Error(error.errors[0].message)
     }
-  };
+  }
 };

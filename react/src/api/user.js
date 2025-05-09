@@ -2,7 +2,7 @@ import { API_URL } from "../utils/constants";
 import { makeURL } from "../utils/helpers";
 import httpClient from "../utils/httpClient";
 
-export async function fetchProfile(username, currentUsername=null) {
+export async function fetchProfile(username, currentUsername = null) {
   try {
     // appends currentUsername if it is passed
     const url = currentUsername ? `?currentUsername=${currentUsername}` : ""
@@ -22,7 +22,7 @@ export async function fetchProfile(username, currentUsername=null) {
   }
 }
 
-export async function followUser(username=null, id=null) {
+export async function followUser(username = null, id = null) {
   try {
     if (username) {
       const response = await httpClient.post(`${API_URL}/user/follow?username=${username}`);
@@ -39,7 +39,7 @@ export async function followUser(username=null, id=null) {
 }
 
 
-export async function unfollowUser(username=null, id=null) {
+export async function unfollowUser(username = null, id = null) {
   try {
     if (username) {
       const response = await httpClient.delete(`${API_URL}/user/unfollow?username=${username}`);
@@ -55,12 +55,22 @@ export async function unfollowUser(username=null, id=null) {
   }
 }
 
-export async function checkUserExists(username=null, id=null, email=null) {
+export async function checkUserExists(username = null, id = null, email = null) {
   try {
-    const url = makeURL(`${API_URL}/user/exists`, null, {username, id, email});
+    const url = makeURL(`${API_URL}/user/exists`, null, { username, id, email });
     const response = await httpClient.get(url);
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.error);
+  }
+}
+
+export async function getGenders() {
+  try {
+    const url = makeURL(`${API_URL}/user/genders`);
+    const response = await httpClient.get(url);
+    return response.data
+  } catch (error) {
+    throw error
   }
 }
