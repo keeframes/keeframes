@@ -6,6 +6,8 @@ import ProfileForm from "../ProfileForm/ProfileForm";
 import StepBar from "../StepBar/StepBar";
 import styles from "./SignUpMultiForm.module.css";
 import { SignUpProvider } from "../../contexts/SignUpContext";
+import authService from "../../api/authService";
+import { useNavigate } from "react-router-dom";
 
 const INITIAL_DATA = {
   username: "",
@@ -19,7 +21,7 @@ const INITIAL_DATA = {
   customPronouns: "",
   pfp: null,
   bio: "",
-  software: [],
+  software: "",
 };
 
 // some keywords
@@ -32,6 +34,7 @@ const INITIAL_DATA = {
 // goTo = function for jumping between steps
 
 export default function SignUpMultiForm() {
+  const navigate = useNavigate();
   const [data, setData] = useState(INITIAL_DATA);
   const [error, setError] = useState(null);
   const stepNames = ["Account", "Personal", "Profile"];
@@ -42,11 +45,6 @@ export default function SignUpMultiForm() {
   // dereferencing the controls into specific variables
   const { next, prev, currentStepIndex, Step, isFirst, isLast, goTo } =
     stepControls;
-
-  // REMOVE THIS
-  useEffect(() => {
-    goTo(1)
-  }, [])
 
   // when the form is submitted
   // (whenever next or submit is pressed)
@@ -60,11 +58,28 @@ export default function SignUpMultiForm() {
       // moves onto the next step if if not is last step
       if (!isLast) {
         next();
+      } else {
+        // TODO: NEED TO SUBMIT THE FORM HERE
+        console.log(data)
+        authService
+          .signup(data)
+          .then(() => {
+            authService.login(data.email, data.password).then(() => navigate("/"));
+          })
+          .catch((error) => {
+            if (error.status === 401) {
+              setError("invalid-credentials");
+            } else if (error.status === 500) {
+              setError("server-error");
+            } else if (error.status === 404) {
+              setError("connection-error");
+            }
+          });
       }
-      // TODO: NEED TO SUBMIT THE FORM HERE
     } catch (error) {
       // sets the error message
       setError(error.message);
+      throw error
     }
   };
 

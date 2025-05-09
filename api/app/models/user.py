@@ -66,7 +66,7 @@ class User(UserMixin, db.Model):
 
     # gets edit count
     def get_edit_count(self):
-        return Edit.query.count()
+        return Edit.query.filter_by(user=self).count()
 
     # checks whether a user is following another user
     def is_following(self, other):

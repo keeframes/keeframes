@@ -12,6 +12,7 @@ export function SignUpProvider({
 }) {
   // function for changing the data in the inputs to be in the form
   const handleChange = (e) => {
+    setError(null);
     const { name, value } = e.target;
     setData({
       ...data,
@@ -21,7 +22,7 @@ export function SignUpProvider({
 
   return (
     <SignUpContext.Provider
-      value={{ handleChange, data, setData, error, stepControls }}
+      value={{ handleChange, data, setData, error, setError, stepControls }}
     >
       {children}
     </SignUpContext.Provider>

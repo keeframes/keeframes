@@ -1,0 +1,21 @@
+.container {
+  width: 200px;
+  height: 200px;
+  line-height: 200px;
+  aspect-ratio: 1;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid var(--secondary-2);
+}
+
+.container:hover {
+  cursor: pointer;
+  border: 1px solid var(--accent-yellow);
+}
+
+.container > img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 50%;
+}

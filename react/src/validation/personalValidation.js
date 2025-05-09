@@ -15,7 +15,7 @@ const personalSchema = z.object({
 
   // Pronouns validation with custom handling
   pronouns: z
-    .enum(["male", "female", "prefer not to say", "other", "custom"]) // Adding the custom option
+    .enum(["he/him", "she/her", "they/them", "custom"]) // Adding the custom option
     .refine((value) => value !== "custom" || value === "custom", {
       message: "Pronouns are required", // Custom logic for pronouns
     }),

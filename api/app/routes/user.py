@@ -38,7 +38,7 @@ def get_profile(username):
     profile["edit_count"] = user.get_edit_count()
     profile["est"] = est
     profile["is_following"] = False
-    profile["pfp_url"] = f"{id}.png" if user.hasPfp else "default.jpg"
+    profile["pfp_url"] = f"{user.id}.png" if user.has_pfp else "default.jpg"
 
     # set is_following to true if the current user is following the user's profile
     if currentUsername:
