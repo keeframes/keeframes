@@ -6,6 +6,7 @@ from ..models.user import load_all_users
 from ..models.user import User
 from ..models.enums import UserGender
 from ..utils.helpers import query_user
+from ..models.extensions import db 
 
 user_bp = Blueprint("users", __name__)
 logger = logging.getLogger(__name__)
@@ -53,6 +54,7 @@ def get_profile(username):
 @login_required
 def edit_profile(username):
     pass
+
 
 
 @user_bp.route("/user/follow", methods=["POST"])
