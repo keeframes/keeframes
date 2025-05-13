@@ -50,7 +50,7 @@ def get_profile(username):
 
     return jsonify(profile), 200
 
-@user_bp.route("/user/edit/<username>", methods=["PATCH"])
+@user_bp.route("/user/edit", methods=["PATCH"])
 @login_required
 def edit_profile(username):
     pass

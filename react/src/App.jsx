@@ -7,6 +7,7 @@ import ProtectedRoutes from "./utils/protectedRoutes";
 import Create from "./pages/CreatePostPage/CreatePostPage";
 import Chat from "./pages/ChatPage/ChatPage";
 import Profile from "./pages/ProfilePage/ProfilePage";
+import EditProfile from "./pages/EditProfilePage/EditProfilePage";
 import { UserProvider } from "./contexts/UserContext";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/chat" element={<Chat />} />
           <Route path="/create" element={<Create />} />
           <Route path="/profile/:username" element={<Profile />} />
+          <Route path="/edit" element={<EditProfile />} />
         </Route>
       </Routes>
     </UserProvider>

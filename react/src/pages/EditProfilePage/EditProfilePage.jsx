@@ -1,7 +1,10 @@
-import styles from ".EditProfile.module.css";
+import styles from "./EditProfilePage.module.css";
+import EditForm from "../../components/EditForm/EditForm";
 
 function EditProfile() {
-    return <></>
+    return (
+        <EditForm />
+    )
 }
 
 export default EditProfile;

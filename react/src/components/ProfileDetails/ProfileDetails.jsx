@@ -4,6 +4,7 @@ import Count from "../../components/Count/Count";
 import { followUser, unfollowUser } from "../../api/user";
 import { useParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import LinkButton from "../LinkButton/LinkButton";
 
 export default function ProfileDetails({ profile, children }) {
   return (
@@ -108,5 +109,5 @@ ProfileDetails.MessageButton = function MessageButton() {
 
 // edit button
 ProfileDetails.EditButton = function EditButton() {
-  return <button className={styles.edit}>Edit Profile</button>;
+  return <LinkButton to="/edit" className={styles.edit}>Edit Profile</LinkButton>;
 };
