@@ -50,12 +50,27 @@ def get_profile(username):
 
     return jsonify(profile), 200
 
-@user_bp.route("/user/edit", methods=["PATCH"])
+@user_bp.route("/user/edit", methods=["POST"])
 @login_required
-def edit_profile(username):
-    pass
+def edit_profile():
+    updated_fields = []
+
+    for key, value in request.form.items():
+        if value == getattr(current_user, key, None):
+            print(f"{key} -> {value} is unchanged.")
+        else:
+            setattr(current_user, key, value)
+            updated_fields.append(key)
+        
+    db.session.commit()
+
+    return jsonify({
+        "status": "success",
+        "updated_fields": list(request.form.keys())
+    })    
 
 
+    
 
 @user_bp.route("/user/follow", methods=["POST"])
 @login_required
