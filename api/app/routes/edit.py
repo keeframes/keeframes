@@ -1,11 +1,11 @@
 import boto3
 import logging
 from flask import jsonify, request, Blueprint
-from flask_login import login_required, current_user
 from ..models.edit import Edit
 from ..models.extensions import db
 from ..utils.helpers import query_user
 from ..utils.compression import img_compression
+from ..auth import login_required, current_user
 
 edit_bp = Blueprint("edit", __name__)
 logger = logging.getLogger(__name__)
@@ -86,7 +86,7 @@ def create_edit():
 def thumbnail():
     thumbnail = request.files.get("thumbnail")
     db.session.add(thumbnail)
-    
+
     # upload edit object to s3 using edit id and user id as a key
     s3_client = boto3.client("s3")
     compressed_thumbnail = img_compression(thumbnail)
@@ -106,6 +106,6 @@ def thumbnail():
     the url where all thumbnails go will be
     edits/static/thumbnails/edit-id.png or jpg
     """
-    
+
     logger.info(f"Successfully uploaded a thumbnail.")
     return jsonify({"thumbnail": thumbnail}), 201

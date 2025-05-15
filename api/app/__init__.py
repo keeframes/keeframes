@@ -2,13 +2,13 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
-from flask_login import LoginManager, login_required, current_user
 
 from .config import ApplicationConfig
 from .routes import routes
 from .models.extensions import db
 from .models.user import User
 from .socketio import socketio
+from .auth import init_auth
 
 import logging
 
@@ -34,9 +34,6 @@ CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*"}})
 # hashing (eg password hashing)
 bcrypt = Bcrypt(app)
 
-# from flask login
-login_manager = LoginManager(app)
-
 # initialises database with app
 db.init_app(app)
 
@@ -55,10 +52,7 @@ socketio.init_app(app)
 #    db.create_all()
 
 
-# a function that login manager uses to load a user
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(user_id)
+init_auth(app)
 
 
 @app.errorhandler(Exception)

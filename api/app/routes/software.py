@@ -1,10 +1,10 @@
 import logging
 import boto3
 from flask import Blueprint, request, jsonify
-from flask_login import login_required, current_user
 from ..models.extensions import db
 from ..models.software import Software
 from ..utils.helpers import query_software
+from ..auth import login_required, current_user
 
 software_bp = Blueprint("software", __name__)
 logger = logging.getLogger(__name__)

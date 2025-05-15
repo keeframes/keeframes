@@ -1,25 +1,25 @@
-import bcrypt
 from datetime import datetime
-from flask_login import UserMixin
 from .extensions import db, get_uuid
 from .relationships import user_follows
 from .enums import UserGender
 from .edit import Edit
 
 
-class User(UserMixin, db.Model):
+class User(db.Model):
     id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
-    name = db.Column(db.String(40), nullable=False)
+    nickname = db.Column(db.String(40), nullable=False)
     username = db.Column(db.String(40), nullable=False, unique=True)
     email = db.Column(db.String(100), nullable=False, unique=True)
-    password = db.Column(db.Text)
-    age = db.Column(db.Integer(), nullable=False)
-    pronouns = db.Column(db.String(20), nullable=False)
+    age = db.Column(db.Integer())
+    pronouns = db.Column(db.String(20))
     bio = db.Column(db.String(150), default="")
     created_at = db.Column(db.DateTime, default=datetime.now())
-    has_pfp = db.Column(db.Boolean, default=False, nullable=False)
-    gender = db.Column(db.Enum(UserGender), default=UserGender.PREFER, nullable=False)
+    gender = db.Column(db.Enum(UserGender), default=UserGender.PREFER)
     software_id = db.Column(db.String(32), db.ForeignKey("software.id"))
+    picture_url = db.Column(db.Text)
+
+    # this is the user id stored in cognito
+    sub = db.Column(db.String(36), nullable=False, unique=True)
 
     software = db.relationship("Software")
     edits = db.relationship("Edit", back_populates="user", cascade="all, delete")
@@ -32,21 +32,6 @@ class User(UserMixin, db.Model):
         secondaryjoin=(user_follows.c.follower_id == id),
         backref=db.backref("following"),
     )
-
-    # flask login NEEDS this to be implemented
-    def get_id(self):
-        return str(self.id)
-
-    # hashes password
-    def set_password(self, password):
-        self.password = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode(
-            "utf-8"
-        )
-
-    # compares 2 password hashes
-    def check_password(self, password):
-        hashed_password = self.password.encode("utf-8")
-        return bcrypt.checkpw(password.encode(), hashed_password)
 
     # gets followers count
     def get_followers_count(self):
@@ -111,12 +96,12 @@ class User(UserMixin, db.Model):
     def to_json(self):
         return {
             "id": self.id,
-            "name": self.name,
+            "nickname": self.nickname,
             "username": self.username,
             "pronouns": self.pronouns,
             "bio": self.bio,
             "created_at": self.created_at,
-            "has_pfp": self.has_pfp,
+            "picture_url": self.picture_url
         }
 
 

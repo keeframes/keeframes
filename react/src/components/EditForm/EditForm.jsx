@@ -1,5 +1,4 @@
 import styles from "./EditForm.module.css";
-import UploadPfp from "../UploadPfp/UploadPfp";
 import PronounsSelect from "../PronounsSelect/PronounsSelect";
 import { useEffect, useState } from "react";
 import { useCurrentUser } from "../../hooks/contexts";
@@ -56,7 +55,6 @@ function EditForm() {
             <form onSubmit={handleSubmit} className={styles.form}>
                 <div className={styles.picture}>
                     <label htmlFor="pfp">Profile Picture</label>
-                    <UploadPfp />
                 </div>
 
                 <div className={styles.formrow}>

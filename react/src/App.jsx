@@ -9,6 +9,7 @@ import Chat from "./pages/ChatPage/ChatPage";
 import Profile from "./pages/ProfilePage/ProfilePage";
 import EditProfile from "./pages/EditProfilePage/EditProfilePage";
 import { UserProvider } from "./contexts/UserContext";
+import Callback from "./pages/Callback/Callback";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/callback" element={<Callback/>}/>
         <Route path="/" element={<Home />} />
         <Route element={<ProtectedRoutes />}>
           <Route path="/chat" element={<Chat />} />

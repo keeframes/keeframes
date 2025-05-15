@@ -1,12 +1,12 @@
 import logging
 from flask import Blueprint, jsonify, request
-from flask_login import current_user, login_required
 from datetime import datetime
 from ..models.user import load_all_users
 from ..models.user import User
 from ..models.enums import UserGender
 from ..utils.helpers import query_user
 from ..models.extensions import db 
+from ..auth import login_required, current_user
 
 user_bp = Blueprint("users", __name__)
 logger = logging.getLogger(__name__)
