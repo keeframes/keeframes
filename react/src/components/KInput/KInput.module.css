@@ -1,0 +1,61 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  row-gap: 8px;
+}
+
+.label {
+  font-size: var(--font-body);
+  font-weight: var(--font-semibold);
+}
+
+.input {
+  padding: 14px 16px;
+  border-radius: var(--border-large);
+  background-color: transparent;
+  border: 1px solid var(--primary-stroke);
+  font-size: var(--font-body);
+}
+
+.input:focus {
+  outline: none;
+  border: 1px solid var(--accent-stroke);
+}
+
+.helper {
+  font-size: var(--caption);
+  opacity: 60%;
+}
+
+.disabled > input {
+  background-color: var(--primary-disabled);
+}
+
+.error > input {
+  background-color: transparent;
+  border: 1px solid var(--error-stroke);
+  color: var(--error-stroke);
+}
+
+.error > input:focus {
+  outline: none;
+  border: 1px solid var(--error-stroke);
+}
+
+.error > .helper {
+  color: var(--error-stroke);
+}
+
+.span {
+  grid-column: span 2;
+}
+
+::placeholder {
+  opacity: 20%;
+}
+
+::-ms-input-placeholder {
+  /* Edge 12 -18 */
+  opacity: 20%;
+}

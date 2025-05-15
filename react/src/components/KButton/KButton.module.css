@@ -1,0 +1,81 @@
+.button {
+  padding: 16px 24px;
+  width: 100%;
+  height: fit-content;
+  border: 1px solid var(--primary-subtle);
+  font-weight: var(--font-medium);
+  font-size: var(--font-body);
+  border-radius: var(--border-medium);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+.button > svg {
+  width: 100%;
+  color: var(--secondary-default);
+  aspect-ratio: 1;
+}
+
+/* sizes */
+.small {
+  padding: 4px 6px;
+}
+
+.span {
+  grid-column: span 2;
+}
+
+.medium {
+  padding: 8px 12px;
+}
+
+.large {
+  padding: 16px 24px;
+}
+
+/* normal button */
+.normal {
+  background-color: var(--primary-subtle);
+  border: 1px solid var(--primary-stroke);
+}
+
+.normal:hover {
+  background-color: var(--primary-hovered);
+}
+
+.normal:focus {
+  outline: none;
+  border: 1px solid var(--accent-stroke);
+}
+
+/* accent button */
+.accent {
+  background-color: var(--accent-default);
+  border: 1px solid var(--accent-default);
+}
+
+.accent:hover {
+  background-color: var(--accent-hovered);
+  border: 1px solid var(--accent-hovered);
+}
+
+/* destructive button */
+.destructive {
+  background-color: var(--error-default);
+  border: 1px solid var(--error-default);
+}
+
+.destructive:hover {
+  border: 1px solid var(--error-stroke);
+}
+
+.disabled {
+  opacity: 30%;
+}
+
+.button:disabled:hover {
+  cursor: default;
+}

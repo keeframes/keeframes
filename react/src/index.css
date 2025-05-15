@@ -1,53 +1,130 @@
 :root {
-  --primary: #0F0F10;
-  --secondary: #151515;
-  --secondary-2: #313133;
+  --blue-100: #9a9ac3;
+  --blue-200: #9a9ac3;
+  --blue-300: #7c7ca4;
+  --blue-400: #5f5f8a;
+  --blue-500: #4a4a79;
+  --blue-600: #424272;
+  --blue-700: #31315f;
+  --blue-800: #242453;
+  --blue-900: #171745;
+  --purple-100: #c2b5cc;
+  --purple-200: #8f8497;
+  --purple-300: #5f5666;
+  --purple-400: #403846;
+  --purple-500: #302b34;
+  --purple-600: #201c23;
+  --purple-700: #110d14;
+  --purple-800: #09060a;
+  --purple-900: #0d070f;
+  --red-100: #eebebe;
+  --red-200: #e6a4a4;
+  --red-300: #dc8787;
+  --red-400: #d36666;
+  --red-500: #c74848;
+  --red-600: #b52a2a;
+  --red-700: #a01919;
+  --red-800: #860d0d;
+  --red-900: #7c0808;
+  --white-0: #ffffff;
+  --white-300: #504d4d;
+  --white-400: #474545;
+  --white-500: #4b4b4b;
 
-  --accent-yellow: #FFE186;
-  --accent-yellow-2: #EACB6B;
-  
-  --accent-purple: #7A7AD1;
-  --accent-purple: #5F5F8A;
+  --accent-default: var(--blue-800);
+  --accent-disabled: var(--blue-300);
+  --accent-disabledtext: var(--blue-100);
+  --accent-hovered: var(--blue-900);
+  --accent-link: var(--blue-100);
+  --accent-stroke: var(--blue-400);
+  --accent-subtle: var(--blue-700);
+  --error-default: var(--red-600);
+  --error-disabled: var(--red-200);
+  --error-disabledtext: var(--red-100);
+  --error-hovered: var(--red-700);
+  --error-stroke: var(--red-400);
+  --error-subtle: var(--red-500);
+  --input-helper: var(--purple-200);
+  --primary-default: var(--purple-800);
+  --primary-disabled: var(--purple-600);
+  --primary-hovered: var(--purple-900);
+  --primary-stroke: var(--purple-400);
+  --primary-subtle: var(--purple-700);
+  --secondary-default: var(--white-0);
+  --secondary-disabled: var(--white-300);
+  --secondary-hovered: var(--white-500);
+  --secondary-subtle: var(--white-400);
+  --border-small: 5px;
+  --border-medium: 7px;
+  --border-large: 10px;
 
-  --text: #FFFFFF;
-  --text-2: #4B4B4B;
-  --error: #C92F2F;
+  /* 96px */
+  --font-display: 6rem;
+  /* 64px */
+  --font-h1: 4rem;
+  /* 48px */
+  --font-h2: 3rem;
+  /* 36px */
+  --font-h3: 2.25rem;
+  /* 32px */
+  --font-h4: 2rem;
+  /* 28px */
+  --font-h5: 1.75rem;
+  /* 20px */
+  --font-subheading: 1.25rem;
+  /* 16px */
+  --font-body: 1rem;
+  /* 12px */
+  --font-caption: 0.75rem;
 
-  --font-350: calc(var(--font-400) - .125rem);
-  --font-400: 1rem;
-  --font-500: calc(var(--font-400) + .125rem);
-  --font-700: calc(var(--font-400) + .5rem);
-  --font-800: calc(var(--font-400) + 1.25rem);
-  --font-900: calc(var(--font-400) + 1.5rem);
-
-  --border-radius: 4px;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bol: 700;
 }
 
 * {
   margin: 0;
   padding: 0;
-  font-family: "Rubik", sans-serif;
+  font-family: "Josefin Sans", sans-serif;
+}
+
+html, body {
+  background-color: var(--primary-default);
 }
 
 h1 {
-  font-size: var(--font-800);
+  font-size: var(--font-h1);
 }
 
 h2 {
-  font-size: var(--font-700);
+  font-size: var(--font-h2);
 }
 
 h3 {
-  font-size: var(--font-500);
-  font-weight: 400;
+  font-size: var(--font-h3);
+}
+
+h4 {
+  font-size: var(--font-h4);
+}
+
+h5 {
+  font-size: var(--font-h5);
 }
 
 p,
 select,
 button,
+input,
+textarea,
 div {
-  font-size: var(--font-400);
-  color: var(--text);
+  font-size: var(--font-body);
+  color: var(--secondary-default);
+}
+
+button:hover {
+  cursor: pointer;
 }
 
 h1,
@@ -56,58 +133,15 @@ h3,
 h4,
 h5,
 p {
-  color: var(--text-primary);
+  color: var(--secondary-default);
 }
 
 a {
   text-decoration: none;
 }
 
-html {
-  background-color: var(--primary);
-}
-
 .hide {
   display: none;
-}
-
-button {
-  padding: 0.5rem 1rem;
-  background-color: var(--secondary);
-  border-radius: var(--border-radius);
-  border: 1px solid var(--secondary-2);
-
-}
-
-button:hover {
-  cursor: pointer;
-  filter: brightness(1.2);
-}
-
-textarea, input, select {
-  background-color: var(--secondary);
-  padding: 1rem;
-  width: 100%;
-  height: 100%;
-  font-size: var(--font-400);
-  border: 1px solid var(--secondary-2);
-  box-sizing: border-box;
-  border-radius: var(--border-radius);
-  color: var(--text);
-  resize: vertical;
-}
-
-.form-row {
-  position: relative;
-  width: 100%;
-}
-
-.form-row > label {
-  position: absolute;
-  top: -10px;
-  left: 10px;
-  background-color: var(--secondary);
-  padding: 0 10px;
 }
 
 .error {
