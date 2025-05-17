@@ -3,9 +3,16 @@ from ..models.extensions import db
 from ..models.user import User
 from ..models.enums import UserGender
 from ..utils.helpers import query_software, random_username
-from ..auth import verify_token, parse_auth_header, login_required, current_user
+from ..auth import (
+    verify_token,
+    parse_auth_header,
+    login_required,
+    current_user,
+    current_user_cognito,
+)
 
 import logging
+import boto3
 
 auth_bp = Blueprint("auth", __name__)
 logger = logging.getLogger(__name__)
@@ -32,6 +39,7 @@ def signup():
 def signup_google():
     # get aws token
     token = parse_auth_header()
+    print(token)
     payload = verify_token(token)
 
     if not payload:
@@ -51,7 +59,11 @@ def signup_google():
     # generate a random username and create a user
     username = random_username()
     user = User(
-        username=username, sub=sub, email=email, nickname=nickname, picture_url=picture_url
+        username=username,
+        sub=sub,
+        email=email,
+        nickname=nickname,
+        picture_url=picture_url,
     )
 
     db.session.add(user)
@@ -64,3 +76,15 @@ def signup_google():
 @login_required
 def is_authenticated():
     return current_user.to_json()
+
+
+@auth_bp.route("/user", methods=["DELETE"])
+@login_required
+def delete_user():
+    client = boto3.client("cognito-idp")
+
+    print(current_user_cognito)
+    response = client.delete_user(AccessToken=str(current_user_cognito))
+    print(response)
+
+    return jsonify("user deleted"), 200

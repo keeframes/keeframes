@@ -1,4 +1,4 @@
-import styles from "./SignUpForm.module.css";
+import styles from "./LoginForm.module.css"
 import KButton from "../KButton/KButton";
 import authService from "../../api/authService";
 import useForm from "../../hooks/useForm";
@@ -6,27 +6,22 @@ import KForm from "../KForm/KForm";
 import Google from "../../assets/google.svg?react"
 import { useNavigate } from "react-router-dom";
 
-export default function SignUpForm() {
+export default function LoginForm() {
   const navigate = useNavigate();
 
   // creating the form
-  const { values } = useForm("signup", {
+  const { values } = useForm("login", {
     email: "",
-    username: "",
-    nickname: "",
     password: "",
-    confirm: "",
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     try {
-      authService.signup(
+      authService.login(
         values.email,
         values.password,
-        values.nickname,
-        values.username,
       );
 
       navigate("/")
@@ -46,8 +41,8 @@ export default function SignUpForm() {
   return (
     <>
       <KForm
-        name="signup"
-        header="Welcome to Keeframes"
+        name="login"
+        header="Login to Keeframes"
         description={
           <>
             <KButton
@@ -67,40 +62,17 @@ export default function SignUpForm() {
             type: "email",
             label: "Email Address",
             placeholder: "Your Email Address",
-            span: true,
           },
-          {
-            name: "username",
-            type: "text",
-            label: "Username",
-            placeholder: "Your Username",
-            helperText: "Must be unique.",
-          },
-          {
-            name: "nickname",
-            type: "text",
-            label: "Nickname",
-            placeholder: "Your Nickname",
-            helperText: "Display Name.",
-          },
-          {
+                  {
             name: "password",
             type: "password",
             label: "Password",
             placeholder: "Your Password",
-            helperText: "Password must at least have 8 characters",
-          },
-          {
-            name: "confirm",
-            type: "password",
-            label: "Confirm",
-            placeholder: "Re-type Password",
-            helperText: "Must be the same as password.",
-          },
+          }
         ]}
       >
         <KButton variant="accent" span={true} type="submit">
-          Next
+          Submit
         </KButton>
       </KForm>
     </>

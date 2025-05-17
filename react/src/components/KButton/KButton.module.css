@@ -14,7 +14,6 @@
 }
 
 .button > svg {
-  width: 100%;
   color: var(--secondary-default);
   aspect-ratio: 1;
 }

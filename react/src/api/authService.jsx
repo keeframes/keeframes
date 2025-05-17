@@ -126,7 +126,7 @@ class AuthService {
     }
   }
 
-  signUpGoogle() {
+  googleAuth() {
     // build the url for the signup page
     const url = COGNITO_PAGE_URL + "/oauth2/authorize";
     const identity_provider = "?identity_provider=Google";

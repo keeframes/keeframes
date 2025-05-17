@@ -86,7 +86,7 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: "Josefin Sans", sans-serif;
+  font-family: "Space Grotesk", sans-serif;
 }
 
 html, body {
@@ -121,6 +121,7 @@ textarea,
 div {
   font-size: var(--font-body);
   color: var(--secondary-default);
+  height: fit-content;
 }
 
 button:hover {
@@ -146,4 +147,10 @@ a {
 
 .error {
   color: var(--error);
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
 }

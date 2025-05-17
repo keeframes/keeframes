@@ -1,21 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import authService from "../../api/authService";
 import styles from "./SignUpPage.module.css";
 import SignUpForm from "../../components/SignUpForm/SignUpForm";
 import KButton from "../../components/KButton/KButton";
-import Google from "../../assets/google.svg?react"
+import Google from "../../assets/google.svg?react";
+import { useNavigate } from "react-router-dom";
+import httpClient from "../../utils/httpClient";
+import { API_URL } from "../../utils/constants";
 
 export default function SignUp() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // when a user authenticates with google it sends an event message
+    // this is so i can access the id token through multiple windows
+    const handleGoogleMessage = async (e) => {
+      // check if event came from window
+      if (e.origin != window.location.origin) return;
+
+      // get data from event
+      const { type, idToken } = e.data;
+
+      // sign up the user and log them in
+      if (type === "oauth-success" && idToken) {
+        localStorage.setItem("idToken", idToken);
+        await httpClient.post(
+          `${API_URL}/signup/google`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${idToken}`,
+            },
+          },
+        );
+
+        navigate("/");
+      }
+    };
+    window.addEventListener("message", handleGoogleMessage);
+    return () =>
+      window.removeEventListener("message", handleGoogleMessage);
+  }, []);
+
   return (
-  <>
-      <div className={styles.container}>
-        <h2>Welcome to Keeframes</h2>
-        <div className={styles.oauth}>
-          <KButton TailIcon={Google} size="medium" onClick={() => authService.signUpGoogle()}>Continue with Google</KButton>
-        </div>
-        <p className={styles.or}>or</p>
-        <SignUpForm/>
-      </div>
+    <>
+      <SignUpForm />
     </>
-  )
+  );
 }

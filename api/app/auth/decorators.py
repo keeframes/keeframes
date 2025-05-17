@@ -15,6 +15,8 @@ def login_required(f):
             payload = verify_token(token)
             user = User.query.filter_by(sub=payload["sub"]).first()
             g.current_user = user
+            g.current_user_cognito = payload
+            g.current_user_token = token
         except Exception as e:
             return jsonify(error=str(e)), 401
 

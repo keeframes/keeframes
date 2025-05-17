@@ -3,6 +3,8 @@
   flex-direction: column;
   text-align: left;
   row-gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .label {
@@ -24,7 +26,7 @@
 }
 
 .helper {
-  font-size: var(--caption);
+  font-size: var(--font-caption);
   opacity: 60%;
 }
 

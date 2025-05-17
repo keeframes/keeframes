@@ -46,7 +46,9 @@ export default function KButton({
       type={type}
     >
       {TailIcon ? <TailIcon/> : null}
-      {children}
+      <p>
+        {children}
+      </p>
       {LeadIcon ? <LeadIcon/> : null}
     </button>
   );
