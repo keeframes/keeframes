@@ -71,7 +71,7 @@ export default function SignUpForm() {
             type: "email",
             label: "Email Address",
             placeholder: "Your Email Address",
-            span: true,
+            span: 2,
           },
           {
             name: "username",
