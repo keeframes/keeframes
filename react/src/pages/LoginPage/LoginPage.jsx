@@ -2,25 +2,25 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./LoginPage.module.css"
 import LoginForm from "../../components/LoginForm/LoginForm";
 import { useEffect } from "react";
+import { API_URL } from "../../utils/constants";
 
 function Login() {
   const navigate = useNavigate();
 
-  useEffect(() => {
+   useEffect(() => {
     // when a user authenticates with google it sends an event message
     // this is so i can access the id token through multiple windows
     const handleGoogleMessage = async (e) => {
       // check if event came from window
-      if (e.origin != window.location.origin) return;
+      if (e.origin != API_URL) return;
 
-      // get data from event
-      const { type, idToken } = e.data;
+      const idToken = e.data.data.idToken
+      const type = e.data.type
 
-      // log them in
-      if (type === "oauth-success" && idToken) {
-        // by setting the idToken in local storage the user
-        // is automatically logged in
+      // log in the user and log them in
+      if (type === "OAUTH_SUCCESS" && idToken) {
         localStorage.setItem("idToken", idToken);
+
         navigate("/");
       }
     };

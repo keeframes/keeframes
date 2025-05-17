@@ -68,3 +68,8 @@ def query_software(id=None, name=None):
     software = query.first()
 
     return software
+
+
+def user_exists(id=None, username=None, email=None):
+    user = query_user(id, username, email)
+    return True if user else False

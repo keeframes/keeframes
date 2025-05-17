@@ -16,23 +16,14 @@ export default function SignUp() {
     // this is so i can access the id token through multiple windows
     const handleGoogleMessage = async (e) => {
       // check if event came from window
-      if (e.origin != window.location.origin) return;
+      if (e.origin != API_URL) return;
 
-      // get data from event
-      const { type, idToken } = e.data;
+      const idToken = e.data.data.idToken
+      const type = e.data.type
 
       // sign up the user and log them in
-      if (type === "oauth-success" && idToken) {
+      if (type === "OAUTH_SUCCESS" && idToken) {
         localStorage.setItem("idToken", idToken);
-        await httpClient.post(
-          `${API_URL}/signup/google`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${idToken}`,
-            },
-          },
-        );
 
         navigate("/");
       }

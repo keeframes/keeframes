@@ -10,4 +10,8 @@ CDN_URL = f"https://{CDN_DOMAIN}"
 COGNITO_REGION = os.getenv("COGNITO_REGION")
 USER_POOL_ID = os.getenv("USER_POOL_ID")
 APP_CLIENT_ID = os.getenv("APP_CLIENT_ID")
+COGNITO_REDIRECT_URI = os.getenv("COGNITO_REDIRECT_URI")
+COGNITO_DOMAIN = os.getenv("COGNITO_DOMAIN")
+COGNITO_TOKEN_ENDPOINT = f"{COGNITO_DOMAIN}/oauth2/token"
+
 JWKS_URL = f'https://cognito-idp.{COGNITO_REGION}.amazonaws.com/{USER_POOL_ID}/.well-known/jwks.json'

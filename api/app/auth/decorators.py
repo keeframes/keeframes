@@ -14,6 +14,10 @@ def login_required(f):
         try:
             payload = verify_token(token)
             user = User.query.filter_by(sub=payload["sub"]).first()
+
+            if not user:
+                return jsonify(error="USER_NOT_FOUND", message="User does not exist"), 401
+
             g.current_user = user
             g.current_user_cognito = payload
             g.current_user_token = token

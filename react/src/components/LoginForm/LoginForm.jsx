@@ -15,18 +15,19 @@ export default function LoginForm() {
     password: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      authService.login(
+      response = await authService.login(
         values.email,
         values.password,
       );
 
-      navigate("/")
     } catch (err) {
-      console.log(err);
+      if (err.error === "CONFIRM_ACCOUNT") {
+        navigate(`/signup/confirm?email=${values.email}`)
+      }
     }
   };
 

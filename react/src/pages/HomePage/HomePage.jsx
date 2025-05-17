@@ -23,7 +23,7 @@ function Home() {
     e.preventDefault()
 
     try {
-      const response = await httpClient.delete(`${API_URL}/user`)
+      const response = await httpClient.delete(`${API_URL}/auth/delete`)
       console.log(response.data);
     } catch (err) {
       console.error(e);
