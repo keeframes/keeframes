@@ -49,10 +49,6 @@
   color: var(--error-stroke);
 }
 
-.span {
-  grid-column: span 2;
-}
-
 ::placeholder {
   opacity: 20%;
 }

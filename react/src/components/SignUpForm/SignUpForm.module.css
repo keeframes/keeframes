@@ -9,3 +9,7 @@
   font-size: var(--font-caption);
   opacity: 40%;
 }
+
+.login {
+  font-size: var(--font-body);
+}

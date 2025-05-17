@@ -8,7 +8,7 @@ export default function KButton({
   size = "large",
   TailIcon = null,
   LeadIcon = null,
-  span = false,
+  span = 1,
   type = "button"
 }) {
   const getClasses = () => {
@@ -16,10 +16,6 @@ export default function KButton({
 
     if (disabled) {
       classes = styles.disabled;
-    }
-
-    if (span) {
-      classes = classes + " " + styles.span
     }
 
     // button type
@@ -44,6 +40,9 @@ export default function KButton({
       onClick={onClick}
       disabled={disabled}
       type={type}
+      style={{
+        gridColumn: `span ${span}`
+      }}
     >
       {TailIcon ? <TailIcon/> : null}
       <p>

@@ -11,11 +11,11 @@ export default function KInput({
   type = "text",
   disabled = false,
   required = false,
-  span = false,
+  span = 1,
 }) {
 
   const getClasses = () => {
-    let classes = span === true ? styles.span : "";
+    let classes = "";
 
     if (disabled) {
       classes = classes + " " + styles.disabled
@@ -31,7 +31,9 @@ export default function KInput({
   }
 
   return (
-    <div className={`${styles.container} ${getClasses()}`}>
+    <div className={`${styles.container} ${getClasses()}`} style={{
+      gridColumn: `span ${span}`
+    }}>
       <label className={styles.label} htmlFor={name}>
         {label}
       </label>

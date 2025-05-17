@@ -4,7 +4,7 @@ import authService from "../../api/authService";
 import useForm from "../../hooks/useForm";
 import KForm from "../KForm/KForm";
 import Google from "../../assets/google.svg?react"
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function SignUpForm() {
   const navigate = useNavigate();
@@ -48,6 +48,7 @@ export default function SignUpForm() {
       <KForm
         name="signup"
         header="Welcome to Keeframes"
+        columns={2}
         description={
           <>
             <KButton
@@ -59,6 +60,9 @@ export default function SignUpForm() {
             </KButton>
             <p className={styles.or}>or</p>
           </>
+        }
+        footer={
+          <p className={styles.login}>Have an account? <Link to="/login">Log in.</Link></p>
         }
         onSubmit={handleSubmit}
         fields={[
@@ -99,7 +103,7 @@ export default function SignUpForm() {
           },
         ]}
       >
-        <KButton variant="accent" span={true} type="submit">
+        <KButton variant="accent" span={2} type="submit">
           Next
         </KButton>
       </KForm>

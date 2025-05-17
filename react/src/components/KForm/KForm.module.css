@@ -20,7 +20,6 @@
 
 .form {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: 1rem;
   width: 100%;
   margin: 0;
@@ -38,19 +37,27 @@
   background-color: var(--primary-subtle);
 }
 
+.footer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  width: 100%;
+}
+
 
 @media (max-width: 768px) {
   .wrapper {
     max-height: none;
     max-width: none;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
   }
 
   .container {
     justify-content: center;
     max-height: none;
     padding: 0 2rem;
+    height: 100%;
   }
 
   .box {

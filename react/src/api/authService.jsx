@@ -121,7 +121,6 @@ class AuthService {
       const response = await httpClient.get(`${API_URL}/is_authenticated`);
       return response.data;
     } catch (error) {
-      console.error("Error during authentication check", error);
       throw error;
     }
   }

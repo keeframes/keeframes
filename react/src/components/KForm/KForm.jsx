@@ -9,7 +9,9 @@ export default function KForm({
   fields,
   onSubmit,
   style = "box",
+  footer,
   children,
+  columns = 1,
 }) {
   const { values, handleChange } = useForm(name);
 
@@ -29,7 +31,13 @@ export default function KForm({
         <div className={styles.container}>
           <h3>{header}</h3>
           {description}
-          <form className={styles.form} onSubmit={onSubmit}>
+          <form
+            className={styles.form}
+            onSubmit={onSubmit}
+            style={{
+              gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
+            }}
+          >
             {fields.map((field, index) => (
               <KInput
                 key={index}
@@ -39,6 +47,9 @@ export default function KForm({
               />
             ))}
             {children}
+            <div className={styles.footer} style={{
+              gridColumn: `span ${columns}`
+            }}>{footer}</div>
           </form>
         </div>
       </div>

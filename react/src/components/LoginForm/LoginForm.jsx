@@ -4,7 +4,7 @@ import authService from "../../api/authService";
 import useForm from "../../hooks/useForm";
 import KForm from "../KForm/KForm";
 import Google from "../../assets/google.svg?react"
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -55,6 +55,12 @@ export default function LoginForm() {
             <p className={styles.or}>or</p>
           </>
         }
+        footer={
+          <>
+            <Link to="/reset">Reset Password</Link>
+            <p>No account? <Link to="/signup">Create one.</Link></p>
+          </>
+        }
         onSubmit={handleSubmit}
         fields={[
           {
@@ -71,7 +77,7 @@ export default function LoginForm() {
           }
         ]}
       >
-        <KButton variant="accent" span={true} type="submit">
+        <KButton variant="accent" type="submit">
           Submit
         </KButton>
       </KForm>
